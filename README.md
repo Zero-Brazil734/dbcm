@@ -22,9 +22,9 @@
   const dbcm = require("dbcm")
   const CmdManager = new dbcm.bot(client)
 
-  CmdManger.registerCommands(`${__dirname}/commands/`, { createSample: true, jsFilter: true }) //명령어 등록
+  CmdManager.registerCommands(`${__dirname}/commands/`, { createSample: true, jsFilter: true }) //명령어 등록
   /** 
-   * 현재 CmdManger.registerCommands(`${__dirname}/commands/`)만 기입하면 오류가 나 기본 설정인 createSample와 jsFilter을 모두 
+   * 현재 CmdManager.registerCommands(`${__dirname}/commands/`)만 기입하면 오류가 나 기본 설정인 createSample와 jsFilter을 모두 
    * true로 두고 싶으시면 CmdManger.registerCommands(`${__dirname}/commands/`, {})라고 적어주세요.
   */
   ```
