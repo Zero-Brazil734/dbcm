@@ -93,7 +93,7 @@ class CommandsRegister {
                 }
                 this.client.commands.set(cmd.config.name, cmd)
                 console.log(chalk.default.green(`[DBCM] ${name} 파일의 명령어 저장 완료`))
-                for(let alias in cmd.config.aliases) {
+                for(var alias of cmd.config.aliases) {
                     this.client.aliases.set(alias, cmd)
                     console.log(chalk.default.green(`[DBCM] ${name} 파일의 단축키 저장 완료`))
                 }
