@@ -87,9 +87,8 @@ class CommandsRegister {
 
             await filteredFiles.forEach(name => {
                 let cmd = require(`${dir}/${name}`)
-                if(cmd.config == undefined || cmd.config == undefined || typeof cmd.config !== "object") {
+                if(cmd.config == undefined && cmd.config == null && typeof cmd.config !== "object") {
                     console.error(chalk.default.blue("DBCM Error: 명령어의 설정란이 존재하지 않습니다. TIP: 혹시 exports.help 설정란을 사용하신다면 exports.config로 바꿔주세요."))
-                    process.exit()
                 }
                 this.client.commands.set(cmd.config.name, cmd)
                 console.log(chalk.default.green(`[DBCM] ${name} 파일의 명령어 저장 완료`))
