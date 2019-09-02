@@ -60,7 +60,7 @@ class CommandsRegister {
                 let mkstr = err.message.toString()
                 if(mkstr.includes("ENOENT: no such file or directory, scandir")) {
                     fs.mkdirSync(dir); 
-                    console.log(chalk.default.yellow("[DBCM] commands 파일을 생성합니다."));
+                    console.log(chalk.default.yellow("[DBCM] 명령어 폴더를 생성합니다."));
                     process.exit()
                 }else{
                     throw new Error(err)
@@ -93,10 +93,10 @@ class CommandsRegister {
                 }
                 this.client.commands.set(cmd.config.name, cmd)
                 console.log(chalk.default.green(`[DBCM] ${name} 파일의 명령어 저장 완료`))
-                cmd.config.aliases.forEach(alias => {
+                for(let alias in cmd.config.aliases) {
                     this.client.aliases.set(alias, cmd)
                     console.log(chalk.default.green(`[DBCM] ${name} 파일의 단축키 저장 완료`))
-                })
+                }
             })
 
             console.log(chalk.default.cyan("[DBCM] 모든 명령어 로딩 완료"))
