@@ -24,8 +24,7 @@
 
   CmdManager.registerCommands(`${__dirname}/commands/`, { createSample: true, jsFilter: true }) //명령어 등록
   /** 
-   * 현재 CmdManager.registerCommands(`${__dirname}/commands/`)만 기입하면 오류가 나 기본 설정인 createSample와 jsFilter을 모두 
-   * true로 두고 싶으시면 CmdManger.registerCommands(`${__dirname}/commands/`, {})라고 적어주세요.
+   * 그냥 CmdManager.registerCommands(`${__dirname}/commands/`)만 입력하시면 위의 설정들이 모두 기본 설정인 true로 진행됩니다
   */
   ```
 
