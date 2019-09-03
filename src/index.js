@@ -18,9 +18,9 @@ class CommandsRegister {
      * @param {String[]} args - 메세지 이벤트의 메세지 내용이 Array로 정리된것(예시: const args = message.content.slice("프리픽스".length).trim().split(/ +/g))
      */
     runCommand(command, msg, args) {
-        if(typeof command !== "string") throw new TypeError("DBCM Error: 명령어를 실행하려면 commands가 String(문자열) 형식이여야 합니다.\n"+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
-        if(typeof msg !== "object") throw new TypeError("DBCM Error: message는 Object 형식이여야 합니다.\n"+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
-        if(!Array.isArray(args)) throw new TypeError("DBCM Error: args는 Array 형식이여야 합니다.\n"+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
+        if(typeof command !== "string") throw new TypeError(chalk.default.magenta("DBCM Error: 명령어를 실행하려면 commands가 String(문자열) 형식이여야 합니다.\n")+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
+        if(typeof msg !== "object") throw new TypeError(chalk.default.magenta("DBCM Error: message는 Object 형식이여야 합니다.\n"+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm")))
+        if(!Array.isArray(args)) throw new TypeError(chalk.default.magenta("DBCM Error: args는 Array 형식이여야 합니다.\n"+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm")))
 
         if(this.client.commands.get(command)) {
             try{
@@ -40,41 +40,39 @@ class CommandsRegister {
 
     /**
      * @param {string} dir - 명령어 폴더의 디렉터리(예시: __dirname+"/commands")
-     * @typedef {object} client - Object
-     * @param {boolean} jsFilter - 자바스크립트 파일만 저장
-     * @param {boolean} createSample - 명령어 파일이 없을시 샘플 파일 생성
-     * @param {client} client
+     * @param {boolean} options.jsFilter - 자바스크립트 파일만 저장
+     * @param {boolean} options.createSample - 명령어 파일이 없을시 샘플 파일 생성
      */
-    registerCommands(dir, { jsFilter = true, createSample = true }) {
+    registerCommands(dir, options = { createSample: true, jsFilter: true }) {
         if(typeof dir !== "string") {
             throw new TypeError("DBCM Error: 명령어의 디렉터리는 스트링(문자열)이여야 합니다.\n"+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
         }
-        if(createSample !== undefined && typeof createSample !== "boolean") {
-            throw new TypeError("DBCM Error: createSample은 Boolean(true/false)이여야 합니다.\n"+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
+        if(options.createSample !== undefined && options.createSample !== null && typeof options.createSample !== "boolean" && typeof options.createSample == "undefined") {
+            throw new TypeError(chalk.default.gray("DBCM Error: createSample은 Boolean(true/false)이여야 합니다.\n"+"예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
         }
-        if(jsFilter !== undefined && typeof jsFilter !== "boolean") {
-            throw new TypeError("DBCM Error: jsFiltering은 Boolean(true/false)이여야 합니다.\n"+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
+        if(options.jsFilter !== undefined && options.jsFilter !== null && typeof options.jsFilter !== "boolean" && typeof options.jsFilter == "undefined") {
+            throw new TypeError(chalk.default.gray("DBCM Error: jsFiltering은 Boolean(true/false)이여야 합니다.\n예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
         } 
         fs.readdir(dir, async(err, files) => {
             if(err) {
                 let mkstr = err.message.toString()
                 if(mkstr.includes("ENOENT: no such file or directory, scandir")) {
-                    fs.mkdirSync(dir); 
-                    console.log(chalk.default.yellow("[DBCM] 명령어 폴더를 생성합니다."));
+                    await fs.mkdirSync(dir); 
+                    await console.log(chalk.default.yellow("[DBCM] commands 파일을 생성합니다."));
                     process.exit()
                 }else{
                     throw new Error(err)
                 }
             }
 
-            if(jsFilter === true) {
+            if(options.jsFilter === true) {
                 var filteredFiles = files.filter(f => f.split(".").pop() === "js")
             }else{
                 var filteredFiles = files
             }
 
             if(filteredFiles.length <= 0) {
-                if(createSample === true) {
+                if(options.createSample === true) {
                     let writing = await fs.createWriteStream(`${dir}/ping.js`, { encoding: "utf-8" })
                     await fs.writeFileSync(`${dir}/ping.js`, "exports.run = (client, message, args) => {\n    message.reply(\"Pong!\")\n}\nexports.config = {\n    name: \"ping\",\n    aliases: [\"pong\", \"pn\", \"핑\", \"퐁\"]\n}")
                     writing.end()
@@ -88,7 +86,20 @@ class CommandsRegister {
             await filteredFiles.forEach(name => {
                 let cmd = require(`${dir}/${name}`)
                 if(cmd.config == undefined && cmd.config == null && typeof cmd.config !== "object") {
-                    console.error(chalk.default.blue("DBCM Error: 명령어의 설정란이 존재하지 않습니다. TIP: 혹시 exports.help 설정란을 사용하신다면 exports.config로 바꿔주세요."))
+                    console.error(chalk.default.magenta(`[DBCM] 해당 ${name} 파일에는 명령어의 설정란이 존재하지 않습니다. TIP: 만약 exports.help 설정란을 사용하신다면 exports.config로 바꿔주세요.`))
+                    process.exit()
+                }
+                if(cmd.config.name == undefined || cmd.config.aliases == null && cmd.config.name == null || cmd.config.aliases == undefined && typeof cmd.config == "object") {
+                    console.error(chalk.default.magenta(`[DBCM] 해당 ${name} 파일에는 명령어의 설정란에서 name 또는 aliases 설정이 존재하지 않습니다.`))
+                    process.exit()
+                }
+                if(typeof cmd.config.name !== "string") {
+                    console.error(chalk.default.magenta(`[DBCM] 해당 ${name} 파일의 설정란 중 name 항목은 String(문자열)이여야 합니다.`))
+                    process.exit()
+                }
+                if(!Array.isArray(cmd.config.aliases) && typeof cmd.config.aliases !== "string") {
+                    console.error(chalk.default.magenta(`[DBCM] 해당 ${name} 파일의 설정란 중 aliases 항목은 Array 또는 String(문자열) 형식이여야 합니다.`))
+                    process.exit()
                 }
                 this.client.commands.set(cmd.config.name, cmd)
                 console.log(chalk.default.green(`[DBCM] ${name} 파일의 명령어 저장 완료`))
