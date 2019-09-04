@@ -38,6 +38,9 @@ License: ISC
       const args = msg.content.slice("프리픽스".length).trim().split(/ +/g)
       const command = args.shift().toLowerCase()
       
-      CmdManager.runCommand(command, msg, args)
+      CmdManager.runCommand(command, msg, args, { cooldown: 3000, cdmsg: `${msg.author} 님은 현재 쿨타임 중입니다.` })
+      /**
+       * 기본 설정은 쿨타임이 모두 꺼져있으니 사용시에 주의 해주세요.
+      */
   })
   ```
