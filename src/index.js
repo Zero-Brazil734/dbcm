@@ -3,9 +3,10 @@
 const { Collection } = require("discord.js")
 const fs = require("fs")
 const chalk = require("chalk")
+const cooldownManager = new Set()
 
 
-class CommandsRegister {
+class CmdManager {
     constructor(client) {
         this.client = client
         this.client.aliases = new Collection()
@@ -13,25 +14,45 @@ class CommandsRegister {
     }
 
     /**
-     * @param {String} command - 메세지 이벤트의 명령어(예시: const command = args.shift().toLowerCase())
-     * @param {Object} msg - 메세지 이벤트
-     * @param {String[]} args - 메세지 이벤트의 메세지 내용이 Array로 정리된것(예시: const args = message.content.slice("프리픽스".length).trim().split(/ +/g))
+     * @param {string} command - 메세지 이벤트의 명령어(예시: const command = args.shift().toLowerCase())
+     * @param {object} msg - 메세지 이벤트
+     * @param {string[]} args - 메세지 이벤트의 메세지 내용이 Array로 정리된것(예시: const args = message.content.slice("프리픽스".length).trim().split(/ +/g))
+     * @param {object} options - 명령어의 커스텀 설정
+     * @param {number} options.cooldown - 명령어의 쿨타임 설정
+     * @param {string} options.cdmsg - 명령어의 쿨타임 메세지 설정
      */
-    runCommand(command, msg, args) {
+    runCommand(command, msg, args, options = { cooldown: 0, cdmsg: "undefined" }) {
         if(typeof command !== "string") throw new TypeError(chalk.default.magenta("DBCM Error: 명령어를 실행하려면 commands가 String(문자열) 형식이여야 합니다.\n")+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
         if(typeof msg !== "object") throw new TypeError(chalk.default.magenta("DBCM Error: message는 Object 형식이여야 합니다.\n"+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm")))
         if(!Array.isArray(args)) throw new TypeError(chalk.default.magenta("DBCM Error: args는 Array 형식이여야 합니다.\n"+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm")))
+        if(options.cooldown !== undefined && options.cooldown !== null && typeof options.cooldown !== "number" && options.cooldown >= 0 && options.cooldown < 3000) throw new RangeError(chalk.default.magenta("DBCM Error: 명령어의 쿨타임은 최소 3초입니다."))
+        if(options.cooldown !== undefined && options.cooldown !== null && typeof options.cooldown !== "number" && options.cooldown > 60000 * 5) throw new RangeError(chalk.default.magenta("DBCM Error: 명령어의 쿨타임은 최대 5분입니다."))
+        if(options !== undefined && options.cooldown !== undefined && options.cdmsg === "undefined" && options.cooldown >= 3000 && options.cdmsg !== undefined && options.cdmsg === "") throw new SyntaxError("DBCM Error: 명령어의 쿨타임 메세지를 설정 해주세요.")
 
         if(this.client.commands.get(command)) {
             try{
+                if(cooldownManager.has(msg.author.id) && options.cdmsg !== "undefined") {
+                    return options.cdmsg !== "undefined" && options.cdmsg !== undefined && options.cdmsg !== "" ? msg.channel.send(options.cdmsg) : undefined
+                }
                 this.client.commands.get(command).run(this.client, msg, args)
+                if(options.cooldown >= 3000) cooldownManager.add(msg.author.id)
+                setTimeout(() => {
+                    cooldownManager.delete(msg.author.id)
+                }, options.cooldown)
             }catch(err){
                 throw new Error(err)
             }
         }
         if(this.client.aliases.get(command)) {
             try{
+                if(cooldownManager.has(msg.author.id)) {
+                    return msg.channel.send(cdmsg)
+                }
                 this.client.aliases.get(command).run(this.client, msg, args)
+                cooldownManager.add(msg.author.id)
+                setTimeout(() => {
+                    cooldownManager.delete(msg.author.id)
+                }, options.cooldown)
             }catch(err){
                 throw new Error(err)
             }
@@ -115,4 +136,4 @@ class CommandsRegister {
 }
 
 
-module.exports.bot = CommandsRegister
+module.exports.bot = CmdManager
