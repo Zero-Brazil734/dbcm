@@ -46,7 +46,7 @@ class CmdManager {
         if(this.client.aliases.get(command)) {
             try{
                 if(cooldownManager.has(msg.author.id)) {
-                    return msg.channel.send(cdmsg)
+                    return msg.channel.send(options.cdmsg)
                 }
                 this.client.aliases.get(command).run(this.client, msg, args)
                 cooldownManager.add(msg.author.id)
@@ -68,17 +68,20 @@ class CmdManager {
         if(typeof dir !== "string") {
             throw new TypeError("DBCM Error: 명령어의 디렉터리는 스트링(문자열)이여야 합니다.\n"+chalk.default.gray("예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
         }
-        if(options.createSample !== undefined && options.createSample !== null && typeof options.createSample !== "boolean" && typeof options.createSample == "undefined") {
+        function isError(asdf) {
+            asdf !== undefined && asdf !== null && typeof asdf !== "boolean" && typeof asdf == "undefined"
+        }
+        if(isError(options.createSample)) {
             throw new TypeError(chalk.default.gray("DBCM Error: createSample은 Boolean(true/false)이여야 합니다.\n"+"예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
         }
-        if(options.jsFilter !== undefined && options.jsFilter !== null && typeof options.jsFilter !== "boolean" && typeof options.jsFilter == "undefined") {
+        if(isError(options.jsFilter)) {
             throw new TypeError(chalk.default.gray("DBCM Error: jsFiltering은 Boolean(true/false)이여야 합니다.\n예시:\nhttps://github.com/Zero-Brazil734/dbcm"))
         } 
         fs.readdir(dir, async(err, files) => {
             if(err) {
                 let mkstr = err.message.toString()
                 if(mkstr.includes("ENOENT: no such file or directory, scandir")) {
-                    await fs.mkdirSync(dir); 
+                    await fs.mkdir(dir); 
                     await console.log(chalk.default.yellow("[DBCM] commands 파일을 생성합니다."));
                     process.exit()
                 }else{
@@ -132,6 +135,43 @@ class CmdManager {
 
             console.log(chalk.default.cyan("[DBCM] 모든 명령어 로딩 완료"))
         })
+    }
+
+
+    /**
+     * @param {string} user - 쿨타임을 초기화할 유저의 ID 
+     */
+    resetCooldown(user) {
+        if(typeof user !== "string") throw new TypeError(chalk.default.magenta("DBCM Error: 쿨타임을 초기화할 유저는 String(문자열) 형식이여야 합니다."))
+
+        let userid = user.replace(/[^0-9]/g, "")
+        this.client.fetchUser(userid).catch(err => {
+            let { message } = err
+            if(message == "Unknown User") {
+                throw new TypeError(chalk.default.magenta("DBCM Error: 쿨타임을 초기화할 유저가 존재하지 않습니다."))
+            }else{
+                throw new Error(err)
+            }
+        })
+
+        if(!cooldownManager.has(userid)) return
+
+        try{
+            cooldownManager.delete(userid)
+        }catch(err){
+            throw new Error(err)
+        }
+    }
+
+    /**
+     * @param {*} - 모든 유저의 쿨타임 초기화
+     */
+    resetAllCooldown() {
+        try{
+            cooldownManager.clear()
+        }catch(err){
+            throw new Error(err)
+        }
     }
 }
 

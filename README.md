@@ -24,7 +24,7 @@
 
   CmdManager.registerCommands(`${__dirname}/commands/`, { createSample: true, jsFilter: true }) //명령어 등록
   /** 
-   * 그냥 CmdManager.registerCommands(`${__dirname}/commands/`)만 입력하시면 위의 설정들이 모두 기본 설정인 true로 진행됩니다
+   * 위 코드를 CmdManager.registerCommands(`${__dirname}/commands/`)만 입력하신다면 위 두개의 설정들이 기본 설정인 true로 진행됩니다.
   */
   ```
 
@@ -33,12 +33,12 @@
   client.on("message", async msg => {
       if(message.system || message.author.bot || message.channel.type === "dm" || !message.content.startsWith("프리픽스")) return
 
-      const args = msg.content.slice("프리픽스".length).trim().split(/ +/g)
-      const command = args.shift().toLowerCase()
+      const args = msg.content.slice("프리픽스".length).trim().split(/ +/g) //프리픽스의 앞부분에서 글자수 만큼과 공백 제거 후, +를 제거하면서 Array화 
+      const command = args.shift().toLowerCase() //args에서 제일 앞 문자열을 삭제 후 가져오면서 소문자화
       
-      CmdManager.runCommand(command, msg, args, { cooldown: 3000, cdmsg: `${msg.author} 님은 현재 쿨타임 중입니다.` })
+      CmdManager.runCommand(command, msg, args, { cooldown: 3000, cdmsg: `${msg.author} 님은 현재 쿨타임 중입니다.` }) //명령어 로딩
       /**
-       * 기본 설정은 쿨타임이 모두 꺼져있으니 사용시에 주의 해주세요.
-      */
+       * 쿨타임은 기본 설정이 비활성화입니다.
+       * */
   })
   ```
