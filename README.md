@@ -37,8 +37,16 @@
       const command = args.shift().toLowerCase() //args에서 제일 앞 문자열을 삭제 후 가져오면서 소문자화
       
       CmdManager.runCommand(command, msg, args, { cooldown: 3000, cdmsg: `${msg.author} 님은 현재 쿨타임 중입니다.` }) //명령어 로딩
-      /**
-       * 쿨타임은 기본 설정이 비활성화입니다.
-       * */
+      //쿨타임은 기본 설정이 비활성화입니다.
+  
+      if(msg.author.id === "개발자의 유저ID" && command === "쿨타임초기화") {
+        CmdManager.resetCooldown(args[0])
+        //"쿨타임초기화"의 바로 뒷부분으로 유저ID를 찾은 뒤 초기화(존재하지 않을시에 터미널에 오류 출력)
+      }
+
+      if(msg.author.id === "개발자의 유저ID" && command === "모든쿨초기화") {
+        CmdManager.resetAllCooldown()
+        //모든 쿨타임 초기화
+      }
   })
   ```
