@@ -1,0 +1,23 @@
+{
+    "notastring": "DBCM Error: 명령어를 실행하려면 {}가 String(문자열) 형식이여야 합니다.\n",
+    "notaobject": "DBCM Error: {}는 Object 형식이여야 합니다.\n",
+    "notaarray": "DBCM Error: {}는 Array 형식이여야 합니다.\n",
+    "example": "예시",
+    "minimumis3": "DBCM Error: 명령어의 쿨타임은 최소 3초입니다.",
+    "maximumis5": "DBCM Error: 명령어의 쿨타임은 최대 5분입니다.",
+    "cdmsg": "DBCM Error: 명령어의 쿨타임 메세지를 설정 해주세요.",
+    "notastring2": "DBCM Error: 명령어의 디렉터리는 String(문자열) 형식이여야 합니다.\n",
+    "notaboolean": "DBCM Error: {}은 Boolean(true/false)이여야 합니다.\n",
+    "createdir": "[DBCM] {} 폴더를 생성합니다.",
+    "createSample": "[DBCM] 명령어 파일이 존재하지 않는것으로 확인되어 샘플 파일을 생성합니다.",
+    "files": "DBCM Error: 해당 디렉터리, {}에는 파일이 존재하지 않습니다.",
+    "notaexportsconfig": "[DBCM] 해당 {} 파일에는 명령어의 설정란이 존재하지 않습니다. TIP: 만약 exports.help 설정란을 사용하신다면 exports.config로 바꿔주세요.",
+    "whereisnameandaliases": "[DBCM] 해당 {} 파일에는 명령어의 설정란에서 name 또는 aliases 설정이 존재하지 않습니다.",
+    "notastring3": "[DBCM] 해당 {} 파일의 설정란 중 name 항목은 String(문자열)이여야 합니다.",
+    "typeofaliases": "[DBCM] 해당 {} 파일의 설정란 중 aliases 항목은 Array 또는 String(문자열) 형식이여야 합니다.",
+    "nameloaded": "[DBCM] {} 파일의 명령어 저장 완료",
+    "aliasloaded": "[DBCM] {} 파일의 단축키 저장 완료",
+    "success": "[DBCM] 모든 명령어 로딩 완료",
+    "notastring4": "DBCM Error: 쿨타임을 초기화할 유저는 String(문자열) 형식이여야 합니다.",
+    "unknownuser": "DBCM Error: 쿨타임을 초기화할 유저가 존재하지 않습니다."
+}

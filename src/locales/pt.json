@@ -1,0 +1,23 @@
+{
+    "notastring": "DBCM Error: Para executar o comando o tipo do {} precisa ser String.\n",
+    "notaobject": "DBCM Error: O tipo do {} precisa ser Object.\n",
+    "notaarray": "DBCM Error: O tipo do {} precisa ser Array.\n",
+    "example": "Exemplo",
+    "minimumis3": "DBCM Error: O cooldown mínimo de comando é 3 segundos.",
+    "maximumis5": "DBCM Error: O cooldown máximo de comando é 5 minutos",
+    "cdmsg": "DBCM Error: Defina uma mensagem para enviar se o usuário estiver em cooldown.",
+    "notastring2": "DBCM Error: O diretório de comandos precisa ser em String.\n",
+    "notaboolean": "DBCM Error: O tipo do {} precisa ser Boolean(true/false).\n",
+    "createdir": "[DBCM] Criando a pasta {}",
+    "createSample": "[DBCM] Identifiquei que não existe comandos nessa pasta então criarei uma.",
+    "files": "DBCM Error: Esse diretório({}) não contém nenhum arquivos.",
+    "notaexportsconfig": "[DBCM] Nesse arquivo {} não existe a configuração do comando. Dica: Se você usa o exports.help troque para exports.config.",
+    "whereisnameandaliases": "[DBCM] Nesse arquivo {} não existe uma das configurações de 'name' ou 'aliases'.",
+    "notastring3": "[DBCM] Nesse arquivo {}, o tipo de name precisa ser String.",
+    "typeofaliases": "[DBCM] Nesse arquivo {}, o tipo de aliases precisa ser String ou Array.",
+    "nameloaded": "[DBCM] Nome do arquivo de comando {} salvo com sucesso.",
+    "aliasloaded": "[DBCM] Alias do arquivo de comando {} salvo com sucesso.",
+    "success": "[DBCM] Todos os comandos salvos com sucesso.",
+    "notastring4": "DBCM Error: O usuário para resetar o cooldown precisa ser String.",
+    "unknownuser": "DBCM Error: Esse usuário é inexistente."
+}

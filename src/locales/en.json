@@ -1,0 +1,23 @@
+{
+    "notastring": "DBCM Error: To execute the cmd type of {} must be a String\n",
+    "notaobject": "DBCM Error: Type of {} must be a Object\n",
+    "notaarray": "DBCM Error: Type of {} must be a Array\n",
+    "example": "Example",
+    "minimumis3": "DBCM Error: The minimum cooldown of cmd is 3 seconds.",
+    "maximumis5": "DBCM Error: The maximum cooldown of cmd is 5 minutes.",
+    "cdmsg": "DBCM Error: Set a message to send if the user is in cooldown please.",
+    "notastring2": "DBCM Error: The type of directory of cmds must be a String\n",
+    "notaboolean": "DBCM Error: the type of {} must be a Boolean(true/false).\n",
+    "createdir": "[DBCM] Creating the folder {}",
+    "createSample": "[DBCM] I identified that there are no commands in this folder so I will create one.",
+    "files": "DBCM Error: This directory({}) no contains any files.",
+    "notaexportsconfig": "[DBCM] This archive {} no contains configs of cmd. TIP: If are using exports.help, change it for exports.config please.",
+    "whereisnameandaliases": "[DBCM] This archive {} no contains configs of 'name' or 'aliases' of cmd.",
+    "notastring3": "[DBCM] In this archive {}, the type of 'name' must be a String.",
+    "typeofaliases": "[DBCM] In this archive {}, the type of 'aliases' must be a Array or String",
+    "nameloaded": "[DBCM] Saved name of cmd from {}",
+    "aliasloaded": "[DBCM] Saved alias of cmd from {}",
+    "success": "[DBCM] All cmds saved successfully.",
+    "notastring4": "DBCM Error: The type of user to reset cooltime must be a String",
+    "unknownuser": "DBCM Error: This user doesn't exist."
+}
