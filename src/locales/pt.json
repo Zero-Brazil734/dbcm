@@ -1,5 +1,5 @@
 {
-    "notastring": "DBCM Error: Para executar o comando o tipo do {} precisa ser String.\n",
+    "notastring": "DBCM Error: O tipo do {} precisa ser String.\n",
     "notaobject": "DBCM Error: O tipo do {} precisa ser Object.\n",
     "notaarray": "DBCM Error: O tipo do {} precisa ser Array.\n",
     "example": "Exemplo",
@@ -19,5 +19,6 @@
     "aliasloaded": "[DBCM] Alias do arquivo de comando {} salvo com sucesso.",
     "success": "[DBCM] Todos os comandos salvos com sucesso.",
     "notastring4": "DBCM Error: O usuário para resetar o cooldown precisa ser String.",
-    "unknownuser": "DBCM Error: Esse usuário é inexistente."
+    "unknownuser": "DBCM Error: Esse usuário é inexistente.",
+    "notastringorarray": "DBCM Error: O tipo do {} precisa ser String ou Array."
 }

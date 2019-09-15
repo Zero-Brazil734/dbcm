@@ -1,5 +1,5 @@
 {
-    "notastring": "DBCM Error: To execute the cmd type of {} must be a String\n",
+    "notastring": "DBCM Error: Type of {} must be a String\n",
     "notaobject": "DBCM Error: Type of {} must be a Object\n",
     "notaarray": "DBCM Error: Type of {} must be a Array\n",
     "example": "Example",
@@ -19,5 +19,6 @@
     "aliasloaded": "[DBCM] Saved alias of cmd from {}",
     "success": "[DBCM] All cmds saved successfully.",
     "notastring4": "DBCM Error: The type of user to reset cooltime must be a String",
-    "unknownuser": "DBCM Error: This user doesn't exist."
+    "unknownuser": "DBCM Error: This user doesn't exist.",
+    "notastringorarray": "DBCM Error: Type of {} must be a String or Array."
 }

@@ -1,5 +1,5 @@
 {
-    "notastring": "DBCM Error: 명령어를 실행하려면 {}가 String(문자열) 형식이여야 합니다.\n",
+    "notastring": "DBCM Error: {}는 String(문자열) 형식이여야 합니다.\n",
     "notaobject": "DBCM Error: {}는 Object 형식이여야 합니다.\n",
     "notaarray": "DBCM Error: {}는 Array 형식이여야 합니다.\n",
     "example": "예시",
@@ -19,5 +19,6 @@
     "aliasloaded": "[DBCM] {} 파일의 단축키 저장 완료",
     "success": "[DBCM] 모든 명령어 로딩 완료",
     "notastring4": "DBCM Error: 쿨타임을 초기화할 유저는 String(문자열) 형식이여야 합니다.",
-    "unknownuser": "DBCM Error: 쿨타임을 초기화할 유저가 존재하지 않습니다."
+    "unknownuser": "DBCM Error: 쿨타임을 초기화할 유저가 존재하지 않습니다.",
+    "notastringorarray": "DBCM Error: {}는 String(문자열) 또는 Array 형식이여야 합니다."
 }
