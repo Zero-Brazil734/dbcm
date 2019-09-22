@@ -75,9 +75,9 @@ class CmdManager {
         if (this.client.aliases.get(command)) {
             try {
                 if (cooldownManager.has(msg.author.id)) {
-                    return msg.channel.send(options.cdmsg)
+                    cdmsg !== "" ? msg.channel.send(options.cdmsg) : undefined
                 }
-                hdo == {} ? this.client.commands.get(command).run(this.client, msg, args) : this.client.commands.get(command).run(this.client, msg, args, hdo)
+                hdo == {} ? this.client.aliases.get(command).run(this.client, msg, args) : this.client.aliases.get(command).run(this.client, msg, args, hdo)
                 cooldownManager.add(msg.author.id)
                 setTimeout(() => {
                     cooldownManager.delete(msg.author.id)
