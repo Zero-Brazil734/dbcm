@@ -1,10 +1,10 @@
 {
   "name": "dbcm",
-  "version": "1.1.7",
+  "version": "1.1.9",
   "description": "Discord Bot Commands Manager은 명령어를 컬렉션에 저장하고 불러오기를 몇줄 만에 끝내 편리하게 해드리기 위해 만들어졌습니다",
   "main": "./src/index.js",
   "scripts": {
-    "test": "node test/test.js"
+    "test": "nodemon test/test.js"
   },
   "keywords": [
     "discord",
@@ -22,12 +22,20 @@
   "bugs": {
     "url": "https://github.com/Zero-Brazil734/dbcm/issues"
   },
-  "author": "제로ㅣBrazil",
+  "author": {
+    "name": "제로ㅣBrazil",
+    "email": "zero734kr@gmail.com",
+    "url": "https://github.com/Zero-Brazil734"
+  },
   "license": "MIT",
   "dependencies": {
     "chalk": "^2.4.2",
     "discord.js": "^11.5.1",
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
   },
   "preferGlobal": true
 }

@@ -20,5 +20,6 @@
     "success": "[DBCM] All cmds saved successfully.",
     "notastring4": "DBCM Error: The type of user to reset cooltime must be a String",
     "unknownuser": "DBCM Error: This user doesn't exist.",
-    "notastringorarray": "DBCM Error: Type of {} must be a String or Array."
+    "notastringorarray": "DBCM Error: Type of {} must be a String or Array.",
+    "unknownData": "DBCM Error: '{}' is an unknown Discord Status data. Expects: 'summary', 'status', 'unresolved_incidents', 'all_incidents', 'upcoming_maintenances', 'active_maintenances', 'all_maintenances'"
 }

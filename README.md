@@ -38,8 +38,8 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
   CmdManager.registerCommands(`${__dirname}/commands/`, { createSample: true, jsFilter: true }) //명령어 등록 : Registering the cmds : Registrando os cmds
   /** 
    * 위 코드를 CmdManager.registerCommands(`${__dirname}/commands/`)만 입력하신다면 위 두개의 설정들이 기본 설정인 true로 진행됩니다.
-   * If you type only CmdManager.registerCommands(`${__dirname}/commands`), the two settings above will remain true which is the * default
-   * Se digitar somente CmdManager.registerCommands(`${__dirname}/commands`), as duas configurações acima continuarão como true que * é a padrão.
+   * If you type only CmdManager.registerCommands(`${__dirname}/commands`), the two settings above will remain true which is the default.
+   * Se digitar somente CmdManager.registerCommands(`${__dirname}/commands`), as duas configurações acima continuarão como true que é a padrão.
   */
   ```
 
@@ -52,7 +52,7 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
       /**
        * 프리픽스의 앞부분에서 글자수 만큼과 공백 제거 후, +를 제거하면서 Array화 
        * Deletes the front by the number of letters in the prefix, removes the whitespace and transforms it to Array by removing the '+' if it has one.
-       * Deleta a parte de frente pela quantidade de letras no prefixo, apaga os espaços em branco e transforma o em Array * removendo a '+' se tiver.
+       * Deleta a parte de frente pela quantidade de letras no prefixo, apaga os espaços em branco e transforma o em Array removendo a '+' se tiver.
       */
       const command = args.shift().toLowerCase() 
       /** 
@@ -82,5 +82,32 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
          * Reseta os cooldowns de todos os usuários
         */
       }
+  })
+  ```
+
+  - 유틸리티 : Utility : Utilidades 
+  ```js
+  const utils = new dbcm.utils(client, { lang: "kr" }) //default: Korean
+
+  client.on("message", async msg => {
+    //... (message config)
+    if(command === "reverse") { //만약 메세지가 'reverse'로 시작한다면 : if message starts with 'reverse' : Se a mensagem começar com 'reverse'
+      msg.channel.send(utils.reverse(msg.content)) //그 메세지의 내용을 반대로 돌려 해당 채널에 전송 : Sending message with the message reversed of what you sent. : Enviara a mensagem com a mensagem revertida do que você mandou.
+      /**
+       * > utils.reverse("test")
+       * > tset
+      */
+    }
+
+    if(command === "discordStatus" && msg.author.id === "Dev ID") { 
+      utils.discordStatus("summary" || "status" || "unresolved_incidents" || "all_incidents" || "upcoming_maintenances" || "active_maintenances" || "all_maintenances", data => { //검색된 데이터를 callback로 처리 : callback of the datas found : callback de dados encontrados
+        console.log(data) 
+        /**
+         * 그 데이터를 object 형식으로 출력합니다.
+         * Show this data in object form
+         * Mostra esses dados em forma de objeto.
+        */
+      })
+    }
   })
   ```

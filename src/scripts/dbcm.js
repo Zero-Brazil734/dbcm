@@ -2,6 +2,11 @@ const { Collection } = require("discord.js")
 const fs = require("fs")
 const chalk = require("chalk")
 const cooldownManager = new Set()
+const pkg = {
+    kr: require("../locales/kr.json"),
+    pt: require("../locales/pt.json"),
+    en: require("../locales/en.json")
+}
 
 class CmdManager {
     constructor(client, options = { lang: "kr" }) {
@@ -10,12 +15,20 @@ class CmdManager {
         this.client.commands = new Collection()
         this.locale = options.lang
 
-        if(this.locale === "kr") {
-            this.pkg = require("../locales/kr.json")
-        }else if(this.locale === "pt") {
-            this.pkg = require("../locales/pt.json")
-        }else if(this.locale === "en") {
-            this.pkg = require("../locales/en.json")
+
+        switch (this.locale) {
+            case "kr":
+                this.lang = pkg.kr
+                break;
+            case "pt":
+                this.lang = pkg.pt
+                break;
+            case "en":
+                this.lang = pkg.en
+                break;
+            default:
+                this.lang = pkg.kr
+                throw new ReferenceError(chalk.red("DBCM Error: Unknown Language was configured. '" + this.locale + "' is probably not supported by DBCM. Set by default, which is 'Korean'."))
         }
     }
 
@@ -26,14 +39,15 @@ class CmdManager {
      * @param {object} options - 명령어의 커스텀 설정
      * @param {number} options.cooldown - 명령어의 쿨타임 설정
      * @param {string} options.cdmsg - 명령어의 쿨타임 메세지 설정
+     * @param {object} hdo - 자신만의 핸들링 옵션 설정입니다. 설정하실때 runCommand(..., { db: database, password: "asdf" })으로 하시면 됩니다. (불러올때는 exports.run = (client, msg, args, asdf.password))
      */
-    runCommand(command, msg, args, options = { cooldown: 0, cdmsg: "undefined" }) {
-        if (typeof command !== "string") throw new TypeError(chalk.default.magenta(this.pkg.notastring.replace("{}", "command")) + chalk.default.gray(`${this.pkg.example}:\nhttps://github.com/Zero-Brazil734/dbcm`))
-        if (typeof msg !== "object") throw new TypeError(chalk.default.magenta(this.pkg.notaobject.replace("{}", "message") + chalk.default.gray(`${this.pkg.example}:\nhttps://github.com/Zero-Brazil734/dbcm`)))
-        if (!Array.isArray(args)) throw new TypeError(chalk.default.magenta(this.pkg.notaarray.replace("{}", "args") + chalk.default.gray(`${this.pkg.example}:\nhttps://github.com/Zero-Brazil734/dbcm`)))
-        if (options.cooldown !== undefined && options.cooldown !== null && typeof options.cooldown !== "number" && options.cooldown >= 0 && options.cooldown < 3000) throw new RangeError(chalk.default.magenta(this.pkg.minimumis3))
-        if (options.cooldown !== undefined && options.cooldown !== null && typeof options.cooldown !== "number" && options.cooldown > 60000 * 5) throw new RangeError(chalk.default.magenta(this.pkg.maximumis5))
-        if (options !== undefined && options.cooldown !== undefined && options.cdmsg === "undefined" && options.cooldown >= 3000 && options.cdmsg !== undefined && options.cdmsg === "") throw new SyntaxError(chalk.default.magenta(this.pkg.cdmsg))
+    runCommand(command, msg, args, options = { cooldown: 0, cdmsg: "undefined" }, hdo = {}) {
+        if (typeof command !== "string") throw new TypeError(chalk.default.magenta(this.lang.notastring.replace("{}", "command")) + chalk.default.gray(`${this.lang.example}:\nhttps://github.com/Zero-Brazil734/dbcm`))
+        if (typeof msg !== "object") throw new TypeError(chalk.default.magenta(this.lang.notaobject.replace("{}", "message") + chalk.default.gray(`${this.lang.example}:\nhttps://github.com/Zero-Brazil734/dbcm`)))
+        if (!Array.isArray(args)) throw new TypeError(chalk.default.magenta(this.lang.notaarray.replace("{}", "args") + chalk.default.gray(`${this.lang.example}:\nhttps://github.com/Zero-Brazil734/dbcm`)))
+        if (options.cooldown !== undefined && options.cooldown !== null && typeof options.cooldown !== "number" && options.cooldown >= 0 && options.cooldown < 3000) throw new RangeError(chalk.default.magenta(this.lang.minimumis3))
+        if (options.cooldown !== undefined && options.cooldown !== null && typeof options.cooldown !== "number" && options.cooldown > 60000 * 5) throw new RangeError(chalk.default.magenta(this.lang.maximumis5))
+        if (options !== undefined && options.cooldown !== undefined && options.cdmsg === "undefined" && options.cooldown >= 3000 && options.cdmsg !== undefined && options.cdmsg === "") throw new SyntaxError(chalk.default.magenta(this.lang.cdmsg))
 
         /**
          * @param {number} this.cmdsCooldown - 명령어의 쿨타임 확인
@@ -49,7 +63,7 @@ class CmdManager {
                 if (cooldownManager.has(msg.author.id) && options.cdmsg !== "undefined") {
                     return options.cdmsg !== "undefined" && options.cdmsg !== undefined && options.cdmsg !== "" ? msg.channel.send(options.cdmsg) : undefined
                 }
-                this.client.commands.get(command).run(this.client, msg, args)
+                hdo == {} ? this.client.commands.get(command).run(this.client, msg, args) : this.client.commands.get(command).run(this.client, msg, args, hdo)
                 if (options.cooldown >= 3000) cooldownManager.add(msg.author.id)
                 setTimeout(() => {
                     cooldownManager.delete(msg.author.id)
@@ -63,7 +77,7 @@ class CmdManager {
                 if (cooldownManager.has(msg.author.id)) {
                     return msg.channel.send(options.cdmsg)
                 }
-                this.client.aliases.get(command).run(this.client, msg, args)
+                hdo == {} ? this.client.commands.get(command).run(this.client, msg, args) : this.client.commands.get(command).run(this.client, msg, args, hdo)
                 cooldownManager.add(msg.author.id)
                 setTimeout(() => {
                     cooldownManager.delete(msg.author.id)
@@ -80,21 +94,17 @@ class CmdManager {
      * @param {boolean} options.createSample - 명령어 파일이 없을시 샘플 파일 생성
      */
     registerCommands(dir, options = { createSample: true, jsFilter: true }) {
-        if (!["kr", "en", "pt"].includes(this.locale)) {
-            console.error(chalk.default.magenta(`Unknown language. Supported langs: kr, en, pt`))
-            process.exit()
-        }
         if (typeof dir !== "string") {
-            throw new TypeError(this.pkg.notastring2 + chalk.default.gray(`${this.pkg.example}:\nhttps://github.com/Zero-Brazil734/dbcm`))
+            throw new TypeError(this.lang.notastring2 + chalk.default.gray(`${this.lang.example}:\nhttps://github.com/Zero-Brazil734/dbcm`))
         }
         function isError(asdf) {
             asdf !== undefined && asdf !== null && typeof asdf !== "boolean" && typeof asdf == "undefined"
         }
         if (isError(options.createSample)) {
-            throw new TypeError(chalk.default.gray(this.pkg.notaboolean.replace("{}", "createSample") + `${this.pkg.example}:\nhttps://github.com/Zero-Brazil734/dbcm`))
+            throw new TypeError(chalk.default.gray(this.lang.notaboolean.replace("{}", "createSample") + `${this.lang.example}:\nhttps://github.com/Zero-Brazil734/dbcm`))
         }
         if (isError(options.jsFilter)) {
-            throw new TypeError(chalk.default.gray(this.pkg.notaboolean.replace("{}", "jsFilter") + `${this.pkg.example}:\nhttps://github.com/Zero-Brazil734/dbcm`))
+            throw new TypeError(chalk.default.gray(this.lang.notaboolean.replace("{}", "jsFilter") + `${this.lang.example}:\nhttps://github.com/Zero-Brazil734/dbcm`))
         }
 
         /**
@@ -111,7 +121,7 @@ class CmdManager {
                 let mkstr = err.message.toString()
                 if (mkstr.includes("ENOENT: no such file or directory, scandir")) {
                     fs.mkdirSync(dir)
-                    console.log(chalk.default.yellow(this.pkg.createdir.replace("{}", "commands")));
+                    console.log(chalk.default.yellow(this.lang.createdir.replace("{}", "commands")));
                     process.exit()
                 } else {
                     throw new Error(err)
@@ -129,10 +139,10 @@ class CmdManager {
                     let writing = await fs.createWriteStream(`${dir}/ping.js`, { encoding: "utf-8" })
                     await fs.writeFileSync(`${dir}/ping.js`, "exports.run = (client, message, args) => {\n    message.reply(\"Pong!\")\n}\nexports.config = {\n    name: \"ping\",\n    aliases: [\"pong\", \"pn\", \"핑\", \"퐁\"]\n}")
                     writing.end()
-                    await console.log(chalk.default.red(this.pkg.createSample))
+                    await console.log(chalk.default.red(this.lang.createSample))
                     process.exit()
                 } else {
-                    throw new ReferenceError(this.pkg.files.replace("{}", dir))
+                    throw new ReferenceError(this.lang.files.replace("{}", dir))
                 }
             }
 
@@ -144,30 +154,30 @@ class CmdManager {
             await filteredFiles.forEach(name => {
                 let cmd = require(`${dir}/${name}`)
                 if (cmd.config == undefined && cmd.config == null && typeof cmd.config !== "object") {
-                    console.error(chalk.default.magenta(this.pkg.notaexportsconfig.replace("{}", name)))
+                    console.error(chalk.default.magenta(this.lang.notaexportsconfig.replace("{}", name)))
                     process.exit()
                 }
                 if (cmd.config.name == undefined || cmd.config.aliases == null && cmd.config.name == null || cmd.config.aliases == undefined && typeof cmd.config == "object") {
-                    console.error(chalk.default.magenta(this.pkg.whereisnameandaliases.replace("{}", name)))
+                    console.error(chalk.default.magenta(this.lang.whereisnameandaliases.replace("{}", name)))
                     process.exit()
                 }
                 if (typeof cmd.config.name !== "string") {
-                    console.error(chalk.default.magenta(this.pkg.notastring3.replace("{}", name)))
+                    console.error(chalk.default.magenta(this.lang.notastring3.replace("{}", name)))
                     process.exit()
                 }
                 if (!Array.isArray(cmd.config.aliases) && typeof cmd.config.aliases !== "string") {
-                    console.error(chalk.default.magenta(this.pkg.typeofaliases.replace("{}", name)))
+                    console.error(chalk.default.magenta(this.lang.typeofaliases.replace("{}", name)))
                     process.exit()
                 }
                 this.client.commands.set(cmd.config.name, cmd)
-                console.log(chalk.default.green(this.pkg.nameloaded.replace("{}", name)))
+                console.log(chalk.default.green(this.lang.nameloaded.replace("{}", name)))
                 for (var alias of cmd.config.aliases) {
                     this.client.aliases.set(alias, cmd)
-                    console.log(chalk.default.green(this.pkg.aliasloaded.replace("{}", name)))
+                    console.log(chalk.default.green(this.lang.aliasloaded.replace("{}", name)))
                 }
             })
-            
-            console.log(chalk.default.cyan(this.pkg.success))
+
+            console.log(chalk.default.cyan(this.lang.success))
         })
     }
 
@@ -176,13 +186,13 @@ class CmdManager {
      * @param {string} user - 쿨타임을 초기화할 유저의 ID 
      */
     resetCooldown(user) {
-        if (typeof user !== "string") throw new TypeError(chalk.default.magenta(this.pkg.notastring4))
+        if (typeof user !== "string") throw new TypeError(chalk.default.magenta(this.lang.notastring4))
 
         let userid = user.replace(/[^0-9]/g, "")
         this.client.fetchUser(userid).catch(err => {
             let { message } = err
             if (message == "Unknown User") {
-                throw new TypeError(chalk.default.magenta(this.pkg.unknownuser))
+                throw new TypeError(chalk.default.magenta(this.lang.unknownuser))
             } else {
                 throw new Error(err)
             }
