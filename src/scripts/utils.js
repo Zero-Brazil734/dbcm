@@ -10,11 +10,19 @@ const locales = {
 class Utils {
     constructor(client, options = { lang: "kr" }) {
         this.client = client
+
+        /**
+         * @param {string} this.licenses - The license comparison list, in Korean
+         */
         this.licenses = "https://www.olis.or.kr/license/compareGuide.do"
-        this.locale = options.lang
+
+        /**
+         * @param {string} this.utilsLocale - The language that is used in DBCM Utils
+         */
+        this.utilsLocale = options.lang
 
 
-        switch (this.locale) {
+        switch (this.utilsLocale) {
             case "kr":
                 this.lang = locales.kr
                 break;
@@ -25,13 +33,13 @@ class Utils {
                 this.lang = locales.en
                 break;
             default:
-                this.lang = locales.kr
-                throw new ReferenceError(chalk.red("DBCM Error: Unknown Language was configured. '" + this.locale + "' is probably not supported by DBCM. Set by default, which is 'Korean'."))
+                this.lang = locales.en
+                throw new ReferenceError(chalk.red("DBCM Error: Unknown Language was configured. '" + this.utilsLocale + "' is probably not supported by DBCM. Set by default, which is 'English'."))
         }
     }
 
     /**
-     * @param {string|string[]} text - 문자열을 반대로 전환해 출력합니다.
+     * @param {string|string[]} text - Reverse array or string content (Example: 'this is a testing msg' => 'gsm gnitset a si siht')
      */
     reverse(text) {
         if (typeof text !== "string" && !Array.isArray(text)) throw new TypeError(chalk.magenta(this.lang.notastringorarray.replace("{}", "text")))
@@ -44,8 +52,8 @@ class Utils {
     }
 
     /**
-     * @param {string} query - 디스코드 Status API에 검색할 데이터 이름 
-     * @param {object} callbackData - 검색 결과의 callback
+     * @param {string} query - The name of data to search in Discord Status API.
+     * @param {object} callbackData - Search data result callback.
      */
     async discordStatus(query, callbackData) {
         if (typeof query !== "string") throw new TypeError(chalk.magenta(this.lang.notastring.replace("{}", "query")))

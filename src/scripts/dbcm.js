@@ -13,10 +13,14 @@ class CmdManager {
         this.client = client
         this.client.aliases = new Collection()
         this.client.commands = new Collection()
-        this.locale = options.lang
+
+        /** 
+         * @param {string} this.dbcmLocale - The language that is used in DBCM CmdManager
+        */
+        this.dbcmLocale = options.lang
 
 
-        switch (this.locale) {
+        switch (this.dbcmLocale) {
             case "kr":
                 this.lang = pkg.kr
                 break;
@@ -27,19 +31,19 @@ class CmdManager {
                 this.lang = pkg.en
                 break;
             default:
-                this.lang = pkg.kr
-                throw new ReferenceError(chalk.red("DBCM Error: Unknown Language was configured. '" + this.locale + "' is probably not supported by DBCM. Set by default, which is 'Korean'."))
+                this.lang = pkg.en
+                throw new ReferenceError(chalk.red("DBCM Error: Unknown Language was configured. '" + this.dbcmLocale + "' is probably not supported by DBCM. Set by default, which is 'English'."))
         }
     }
 
     /**
-     * @param {string} command - 메세지 이벤트의 명령어(예시: const command = args.shift().toLowerCase())
-     * @param {object} msg - 메세지 이벤트
-     * @param {string[]} args - 메세지 이벤트의 메세지 내용이 Array로 정리된것(예시: const args = message.content.slice("프리픽스".length).trim().split(/ +/g))
-     * @param {object} options - 명령어의 커스텀 설정
-     * @param {number} options.cooldown - 명령어의 쿨타임 설정
-     * @param {string} options.cdmsg - 명령어의 쿨타임 메세지 설정
-     * @param {object} hdo - 자신만의 핸들링 옵션 설정입니다. 설정하실때 runCommand(..., { db: database, password: "asdf" })으로 하시면 됩니다. (불러올때는 exports.run = (client, msg, args, asdf.password))
+     * @param {string} command - cmd of message event(Example: const command = args.shift().toLowerCase())
+     * @param {object} msg - message event
+     * @param {string[]} args - message content in form of array.(Example: const args = message.content.slice("<prefix>".length).trim().split(/ +/g))
+     * @param {object} options - custom options of command
+     * @param {number} options.cooldown - sets the cooldown of cmd
+     * @param {string} options.cdmsg - sets the cooldown message of cmd
+     * @param {object} hdo - sets your custom handling options. Setting: runCommand(..., { db: database, password: "asdf" }), calling: exports.run = (client, msg, args, asdf.password)
      */
     runCommand(command, msg, args, options = { cooldown: 0, cdmsg: "undefined" }, hdo = {}) {
         if (typeof command !== "string") throw new TypeError(chalk.default.magenta(this.lang.notastring.replace("{}", "command")) + chalk.default.gray(`${this.lang.example}:\nhttps://github.com/Zero-Brazil734/dbcm`))
@@ -50,11 +54,11 @@ class CmdManager {
         if (options !== undefined && options.cooldown !== undefined && options.cdmsg === "undefined" && options.cooldown >= 3000 && options.cdmsg !== undefined && options.cdmsg === "") throw new SyntaxError(chalk.default.magenta(this.lang.cdmsg))
 
         /**
-         * @param {number} this.cmdsCooldown - 명령어의 쿨타임 확인
+         * @param {number} this.cmdsCooldown - Shows the cooldown of cmds
          */
         this.cmdsCooldown = options.cooldown
         /**
-         * @param {string} this.cooldownMsg - 해당 유저가 쿨타임 중일때 출력하는 메세지 확인
+         * @param {string} this.cooldownMsg - Shows the cooldown message of cmds
          */
         this.cooldownMsg = options.cdmsg
 
@@ -75,7 +79,7 @@ class CmdManager {
         if (this.client.aliases.get(command)) {
             try {
                 if (cooldownManager.has(msg.author.id)) {
-                    cdmsg !== "" ? msg.channel.send(options.cdmsg) : undefined
+                    return msg.channel.send(options.cdmsg)
                 }
                 hdo == {} ? this.client.aliases.get(command).run(this.client, msg, args) : this.client.aliases.get(command).run(this.client, msg, args, hdo)
                 cooldownManager.add(msg.author.id)
@@ -89,9 +93,9 @@ class CmdManager {
     }
 
     /**
-     * @param {string} dir - 명령어 폴더의 디렉터리(예시: __dirname+"/commands")
-     * @param {boolean} options.jsFilter - 자바스크립트 파일만 저장
-     * @param {boolean} options.createSample - 명령어 파일이 없을시 샘플 파일 생성
+     * @param {string} dir - Commands directory. Is only available with __dirname, not "./commands". (Example: __dirname+"/commands")
+     * @param {boolean} options.jsFilter - Define if saves only JavaScript Files 
+     * @param {boolean} options.createSample - define if no files exist, create a sample file
      */
     registerCommands(dir, options = { createSample: true, jsFilter: true }) {
         if (typeof dir !== "string") {
@@ -108,11 +112,11 @@ class CmdManager {
         }
 
         /**
-         * @param {object} this.registerOptions - 명령어 저장의 설정 확인
+         * @param {object} this.registerOptions - Shows command saving options on object.
          */
         this.registerOptions = options
         /**
-         * @param {string} this.cmdsDir - 명령어를 저장할때 읽는 폴더 확인
+         * @param {string} this.cmdsDir - Shows the directory used to register commands
          */
         this.cmdsDir = dir
 
@@ -147,7 +151,7 @@ class CmdManager {
             }
 
             /**
-             * @param {number} this.cmdsSize - 저장된 명령어의 개수
+             * @param {number} this.cmdsSize - Show total saved commands
              */
             this.cmdsSize = filteredFiles.length
 
@@ -183,7 +187,7 @@ class CmdManager {
 
 
     /**
-     * @param {string} user - 쿨타임을 초기화할 유저의 ID 
+     * @param {string} user - UserID to reset cooldown
      */
     resetCooldown(user) {
         if (typeof user !== "string") throw new TypeError(chalk.default.magenta(this.lang.notastring4))
@@ -208,7 +212,7 @@ class CmdManager {
     }
 
     /**
-     * @param {*} - 모든 유저의 쿨타임 초기화
+     * @param {*} - Resets the cooldowns of everyone
      */
     resetAllCooldown() {
         try {
