@@ -18,7 +18,7 @@ class CmdManager {
          * @param {string} this.dbcmLocale - The language that is used in DBCM CmdManager
         */
         this.dbcmLocale = options.lang
-
+        
 
         switch (this.dbcmLocale) {
             case "kr":

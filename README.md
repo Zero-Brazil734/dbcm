@@ -32,7 +32,7 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
   const Discord = require("discord.js")
   const client = new Discord.Client()
   const dbcm = require("dbcm")
-  const CmdManager = new dbcm.bot(client, { lang: "kr" }) //default: kr(korean)
+  const CmdManager = new dbcm.bot(client, { lang: "kr" }) //default: en(english)
   //Supported languages: kr(korean), en(english) and pt(portuguese-brazil)
 
   CmdManager.registerCommands(`${__dirname}/commands/`, { createSample: true, jsFilter: true }) //명령어 등록 : Registering the cmds : Registrando os cmds
@@ -87,7 +87,7 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
 
   - 유틸리티 : Utility : Utilidades 
   ```js
-  const utils = new dbcm.utils(client, { lang: "kr" }) //default: Korean
+  const utils = new dbcm.utils({ lang: "kr" }) //default: English
 
   client.on("message", async msg => {
     //... (message config)
@@ -108,6 +108,15 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
          * Mostra esses dados em forma de objeto.
         */
       })
+    }
+
+    if(command === "numberFilter") {
+      msg.reply(utils.numberFilter(args.join(" "), { toNumber: false }) //toNumber's default: false
+      /**
+       * 명령어를 제외한 메세지의 내용에서 숫자만 추출한뒤 돌려줍니다.
+       * Filter only the numbers in the message content and return it
+       * Filtra só os números no conteúdo da mensagem e devolve-a 
+      */
     }
   })
   ```

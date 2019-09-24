@@ -21,5 +21,6 @@
     "notastring4": "DBCM Error: 쿨타임을 초기화할 유저는 String(문자열) 형식이여야 합니다.",
     "unknownuser": "DBCM Error: 쿨타임을 초기화할 유저가 존재하지 않습니다.",
     "notastringorarray": "DBCM Error: {}는 String(문자열) 또는 Array 형식이여야 합니다.",
-    "unknownData": "DBCM Error: '{}'는 디스코드 Status 데이터가 아닙니다. 데이터 목록: 'summary', 'status', 'unresolved_incidents', 'all_incidents', 'upcoming_maintenances', 'active_maintenances', 'all_maintenances'"
+    "unknownData": "DBCM Error: '{}'는 디스코드 Status 데이터가 아닙니다. 데이터 목록: 'summary', 'status', 'unresolved_incidents', 'all_incidents', 'upcoming_maintenances', 'active_maintenances', 'all_maintenances'",
+    "isNaN": "DBCM Error: '{}'의 파싱 결과는 NaN(Not a Number)입니다."
 }

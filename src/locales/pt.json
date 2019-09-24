@@ -21,5 +21,6 @@
     "notastring4": "DBCM Error: O usuário para resetar o cooldown precisa ser String.",
     "unknownuser": "DBCM Error: Esse usuário é inexistente.",
     "notastringorarray": "DBCM Error: O tipo do {} precisa ser String ou Array.",
-    "unknownData": "DBCM Error: '{}' não é um dado de Discord Status. Espera-se: 'summary', 'status', 'unresolved_incidents', 'all_incidents', 'upcoming_maintenances', 'active_maintenances', 'all_maintenances'"
+    "unknownData": "DBCM Error: '{}' não é um dado de Discord Status. Espera-se: 'summary', 'status', 'unresolved_incidents', 'all_incidents', 'upcoming_maintenances', 'active_maintenances', 'all_maintenances'",
+    "isNaN": "DBCM Error: o resultado de parse do '{}' é NaN(Not a Number)."
 }

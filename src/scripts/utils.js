@@ -8,9 +8,7 @@ const locales = {
 
 
 class Utils {
-    constructor(client, options = { lang: "kr" }) {
-        this.client = client
-
+    constructor(options = { lang: "kr" }) {
         /**
          * @param {string} this.licenses - The license comparison list, in Korean
          */
@@ -49,6 +47,29 @@ class Utils {
         } else if (Array.isArray(text)) {
             return text.reverse()
         }
+    }
+
+    /**
+     * @param {string} text - A string text to extract the numbers
+     * @param {object} options - Options of filtering
+     * @param {boolean} options.toNumber - Set whether to convert to number
+     */
+    numberFilter(text, options = { toNumber: false }) {
+        if (typeof text !== "string") throw new TypeError(chalk.magenta(this.lang.notastring.replace("{}", "text")))
+
+        let filtered = text.replace(/[^0-9]/g, "")
+        if (options.toNumber === false) {
+            var result = filtered
+        } else {
+            if (isNaN(parseInt(filtered, 10))) {
+                var result = filtered
+                throw new SyntaxError(chalk.magenta(this.lang.isNaN.replace("{}", result)))
+            } else {
+                var result = parseInt(filtered, 10)
+            }
+        }
+
+        return result
     }
 
     /**
