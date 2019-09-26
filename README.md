@@ -32,7 +32,19 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
   const Discord = require("discord.js")
   const client = new Discord.Client()
   const dbcm = require("dbcm")
-  const CmdManager = new dbcm.bot(client, { lang: "kr" }) //default: en(english)
+  const CmdManager = new dbcm.bot(client, { 
+    lang: "kr",  //default: en(english),
+    runCommand: {
+      cooldown: {
+        time: 3000,
+        msg: "idk"
+      },
+      blacklist: {
+        list: ["UserID"],
+        msg: "idK"
+      }
+    }
+  }) 
   //Supported languages: kr(korean), en(english) and pt(portuguese-brazil)
 
   CmdManager.registerCommands(`${__dirname}/commands/`, { createSample: true, jsFilter: true }) //명령어 등록 : Registering the cmds : Registrando os cmds
@@ -61,7 +73,8 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
        * Deleta a primeira String de 'args' e transforma em letra minúscula
       */
       
-      CmdManager.runCommand(command, msg, args, { cooldown: 3000, cdmsg: `${msg.author} 님은 현재 쿨타임 중입니다.` }) //명령어 로딩 : Loading the commands : Carregando os comandos
+      
+      CmdManager.runCommand(command, msg, args, { dbpassword: "asdf1234", dbuser: "Anonymous" }) //명령어 로딩 : Loading the commands : Carregando os comandos
       //쿨타임은 기본 설정이 비활성화입니다. : The default is cooldown disabled : O padrão é cooldown desativado
   
       //아래의 두 명령어는 ~~귀찮아서~~ index 형식으로 써두었습니다. : I wrote these two commands in index form because I was too lazy to explain how to handler : eu escrevi esses dois comandos em forma de index porque fiquei com preguiça de explicar como handler

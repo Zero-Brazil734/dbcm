@@ -22,5 +22,6 @@
     "unknownuser": "DBCM Error: Esse usuário é inexistente.",
     "notastringorarray": "DBCM Error: O tipo do {} precisa ser String ou Array.",
     "unknownData": "DBCM Error: '{}' não é um dado de Discord Status. Espera-se: 'summary', 'status', 'unresolved_incidents', 'all_incidents', 'upcoming_maintenances', 'active_maintenances', 'all_maintenances'",
-    "isNaN": "DBCM Error: o resultado de parse do '{}' é NaN(Not a Number)."
+    "isNaN": "DBCM Error: o resultado de parse do '{}' é NaN(Not a Number).",
+    "deprecated": "DBCM Deprecated Action Error: Esse método está 'deprecated'(descontinuada). Por favor, veja os novos exemplos do https://github.com/Zero-Brazil734/dbcm/blob/master/updates.md para saber da nova atualização."
 }

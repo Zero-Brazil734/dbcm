@@ -22,5 +22,6 @@
     "unknownuser": "DBCM Error: 쿨타임을 초기화할 유저가 존재하지 않습니다.",
     "notastringorarray": "DBCM Error: {}는 String(문자열) 또는 Array 형식이여야 합니다.",
     "unknownData": "DBCM Error: '{}'는 디스코드 Status 데이터가 아닙니다. 데이터 목록: 'summary', 'status', 'unresolved_incidents', 'all_incidents', 'upcoming_maintenances', 'active_maintenances', 'all_maintenances'",
-    "isNaN": "DBCM Error: '{}'의 파싱 결과는 NaN(Not a Number)입니다."
+    "isNaN": "DBCM Error: '{}'의 파싱 결과는 NaN(Not a Number)입니다.",
+    "deprecated": "DBCM Deprecated Action Error: 해당 메소드는 deprecate 되었습니다. 새로운 업데이트로 인한 달라진 점을 확인하시려면 https://github.com/Zero-Brazil734/dbcm/blob/master/updates.md 의 예시를 확인 해주세요."
 }
