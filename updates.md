@@ -1,7 +1,7 @@
 ## DBCM Updates Logs
 - Here are the dbcm update logs.
 
-# DBCM v1.2.2
+### DBCM v1.2.2
 - Changed configuration from 'runCommand' to bot class constructor, and added blacklist of bot's cmd
   * New Example: 
 
@@ -52,4 +52,41 @@
     name: "ping",
     aliases: ["pong", "pn", "핑", "퐁"]
   }
+  ```
+
+
+### DBCM v1.2.3
+- Added to be able to put some message properties, for example message.author can be sent with %{message.author}
+  * Example:
+
+  - index.js
+  ```js
+  //...
+  const dbcm = require("dbcm")
+  const cm = new dbcm.bot(client, {
+      lang: "en",
+      runCommand: {
+          cooldown: {
+              time: 3000, //3 seconds
+              msg: "%{message.author}, you're in cooldown to use the commands."
+              /**
+               * %{message.author} - mentions the author of msg
+               * %{message.author.id} - The message author's user ID
+               * %{message.guild.name} - The guild name
+               * ${message.guild.id} - The id of guild
+               * %{cmd.cooldown} - The cooldown of cmd in milliseconds. WARNING: That will appear in String type.
+              */
+          },
+          blacklist: {
+              list: ["User ID"],
+              msg: "%{message.author}, you're on blacklist."
+              /**
+               * %{message.author} - mentions the author of msg
+               * %{message.author.id} - The message author's user ID
+               * %{message.guild.name} - The guild name
+               * ${message.guild.id} - The id of guild
+              */
+          }
+      }
+  })
   ```

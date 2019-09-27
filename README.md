@@ -36,12 +36,26 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
     lang: "kr",  //default: en(english),
     runCommand: {
       cooldown: {
-        time: 3000,
-        msg: "idk"
-      },
+        time: 3000, //3 seconds
+        msg: "%{message.author}, you're in cooldown to use the commands."
+        /**
+         * %{message.author} - mentions the author of msg
+         * %{message.author.id} - The message author's user ID
+         * %{message.guild.name} - The guild name
+         * ${message.guild.id} - The id of guild
+         * %{cmd.cooldown} - The cooldown of cmd in milliseconds. WARNING: That will appear in String type.
+        */
+        },
+
       blacklist: {
-        list: ["UserID"],
-        msg: "idK"
+        list: ["User ID"],
+        msg: "%{message.author}, you're on blacklist."
+        /**
+         * %{message.author} - mentions the author of msg
+         * %{message.author.id} - The message author's user ID
+         * %{message.guild.name} - The guild name
+         * ${message.guild.id} - The id of guild
+        */
       }
     }
   }) 
