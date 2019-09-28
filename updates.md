@@ -93,3 +93,13 @@
 
 ### DBCM v1.2.4
 - Fix some 'undefineds' errors and remove all try and catch because it was hiding the error location
+
+### DBCM v1.2.5
+- Apply asynchronouns function
+  * Example:
+   
+  - index.js
+  ```js
+  //...
+  cm.runCommand(cmd, msg, args).catch(err => console.error(err))
+  ```

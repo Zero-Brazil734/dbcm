@@ -8,7 +8,7 @@ const locales = {
 
 
 class Utils {
-    constructor(options = { lang: "kr" }) {
+    constructor(options = { lang: "ko-KR" }) {
         /**
          * @param {string} this.licenses - The license comparison list, in Korean
          */
@@ -17,35 +17,34 @@ class Utils {
         /**
          * @param {string} this.utilsLocale - The language that is used in DBCM Utils
          */
-        this.utilsLocale = options.lang
+        this.utilsLocale = options.lang 
 
-
-        switch (this.utilsLocale) {
-            case "kr":
+        switch (options.lang) {
+            case "ko-KR":
                 this.lang = locales.kr
-                break;
-            case "pt":
+                break;  
+            case "pt-BR":
                 this.lang = locales.pt
                 break;
-            case "en":
+            case "en-US":
                 this.lang = locales.en
                 break;
             default:
                 this.lang = locales.en
-                throw new ReferenceError(chalk.red("DBCM Error: Unknown Language was configured. '" + this.utilsLocale + "' is probably not supported by DBCM. Set by default, which is 'English'."))
+                throw new ReferenceError(chalk.red("DBCM Error: Unknown Language was configured. '" + options.lang + "' is probably not supported by DBCM. Set by default, which is 'English'."))
         }
     }
 
     /**
      * @param {string|string[]} text - Reverse array or string content (Example: 'this is a testing msg' => 'gsm gnitset a si siht')
      */
-    reverse(text) {
+    async reverse(text) {
         if (typeof text !== "string" && !Array.isArray(text)) throw new TypeError(chalk.magenta(this.lang.notastringorarray.replace("{}", "text")))
 
         if (typeof text == "string") {
-            return text.split("").reverse().join("")
+            return await text.split("").reverse().join("")
         } else if (Array.isArray(text)) {
-            return text.reverse()
+            return await text.reverse()
         }
     }
 
@@ -54,7 +53,7 @@ class Utils {
      * @param {object} options - Options of filtering
      * @param {boolean} options.toNumber - Set whether to convert to number
      */
-    numberFilter(text, options = { toNumber: false }) {
+    async numberFilter(text, options = { toNumber: false }) {
         if (typeof text !== "string") throw new TypeError(chalk.magenta(this.lang.notastring.replace("{}", "text")))
 
         let filtered = text.replace(/[^0-9]/g, "")
@@ -69,7 +68,7 @@ class Utils {
             }
         }
 
-        return result
+        return await result
     }
 
     /**

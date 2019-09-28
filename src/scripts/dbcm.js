@@ -31,17 +31,17 @@ class CmdManager {
         /** 
          * @param {string} this.dbcmLocale - The language that is used in DBCM CmdManager
         */
-        this.dbcmLocale = settings.lang
+        this.dbcmLocale = this.settings.lang
 
 
         switch (this.dbcmLocale) {
-            case "kr":
+            case "ko-KR":
                 this.lang = pkg.kr
                 break;
-            case "pt":
+            case "pt-BR":
                 this.lang = pkg.pt
                 break;
-            case "en":
+            case "en-US":
                 this.lang = pkg.en
                 break;
             default:
@@ -56,7 +56,7 @@ class CmdManager {
      * @param {string[]} args - message content in form of array.(Example: const args = message.content.slice("<prefix>".length).trim().split(/ +/g))
      * @param {object} hdo - sets your custom handling options. Setting: runCommand(..., { db: database, password: "asdf" }), calling: exports.run = (client, msg, args, asdf.password)
      */
-    runCommand(command, msg, args, hdo = {}) {
+    async runCommand(command, msg, args, hdo = {}) {
         for (let key of Object.keys(hdo)) {
             if (key.includes("cooldown") || key.includes("cdmsg")) {
                 setTimeout(() => {
@@ -86,7 +86,7 @@ class CmdManager {
             }
 
             if (this.settings.runCommand.blacklist.list !== [] && this.settings.runCommand.blacklist.list !== undefined && this.settings.runCommand.blacklist.list.includes(msg.author.id) && this.settings.runCommand.blacklist.msg !== "undefined") return msg.channel.send(blresult)
-            hdo == {} ? this.client.commands.get(command).run(this.client, msg, args) : this.client.commands.get(command).run(this.client, msg, args, hdo)
+            hdo == {} ? await this.client.commands.get(command).run(this.client, msg, args) : await this.client.commands.get(command).run(this.client, msg, args, hdo)
             if (this.settings.runCommand.cooldown !== undefined && this.settings.runCommand.cooldown.time !== undefined && this.settings.runCommand.cooldown.time >= 3000) {
                 cooldownManager.add(msg.author.id)
                 setTimeout(() => {
@@ -99,7 +99,7 @@ class CmdManager {
                 return msg.channel.send(this.settings.runCommand.cooldown.msg)
             }
             if (this.settings.runCommand.blacklist.list !== [] && this.settings.runCommand.blacklist.list !== undefined && this.settings.runCommand.blacklist.list.includes(msg.author.id) && this.settings.runCommand.blacklist.msg !== "undefined") return msg.channel.send(this.settings.runCommand.blacklist.msg)
-            hdo == {} ? this.client.aliases.get(command).run(this.client, msg, args) : this.client.aliases.get(command).run(this.client, msg, args, hdo)
+            hdo == {} ? await this.client.aliases.get(command).run(this.client, msg, args) : await this.client.aliases.get(command).run(this.client, msg, args, hdo)
 
             if (this.settings.runCommand.cooldown !== undefined && this.settings.runCommand.cooldown.time !== undefined && this.settings.runCommand.cooldown.time >= 3000) {
                 cooldownManager.add(msg.author.id)
@@ -115,7 +115,7 @@ class CmdManager {
      * @param {boolean} options.jsFilter - Define if saves only JavaScript Files 
      * @param {boolean} options.createSample - define if no files exist, create a sample file
      */
-    registerCommands(dir, options = { createSample: true, jsFilter: true }) {
+    async registerCommands(dir, options = { createSample: true, jsFilter: true }) {
         if (typeof dir !== "string") {
             throw new TypeError(this.lang.notastring2 + chalk.default.gray(`${this.lang.example}:\nhttps://github.com/Zero-Brazil734/dbcm`))
         }
@@ -199,7 +199,7 @@ class CmdManager {
                 }
             })
 
-            console.log(chalk.default.cyan(this.lang.success))
+            await console.log(chalk.default.cyan(this.lang.success))
         })
     }
 
@@ -207,7 +207,7 @@ class CmdManager {
     /**
      * @param {string} user - UserID to reset cooldown
      */
-    resetCooldown(user) {
+    async resetCooldown(user) {
         if (typeof user !== "string") throw new TypeError(chalk.default.magenta(this.lang.notastring4))
 
         let userid = user.replace(/[^0-9]/g, "")
@@ -222,14 +222,14 @@ class CmdManager {
 
         if (!cooldownManager.has(userid)) return
 
-        cooldownManager.delete(userid)
+        await cooldownManager.delete(userid)
     }
 
     /**
      * @param {*} - Resets the cooldowns of everyone
      */
-    resetAllCooldown() {
-        cooldownManager.clear()
+    async resetAllCooldown() {
+        await cooldownManager.clear()
     }
 }
 
