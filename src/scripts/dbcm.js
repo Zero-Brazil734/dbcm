@@ -68,46 +68,44 @@ class CmdManager {
         if (typeof command !== "string") throw new TypeError(chalk.default.magenta(this.lang.notastring.replace("{}", "command")) + chalk.default.gray(`${this.lang.example}:\nhttps://github.com/Zero-Brazil734/dbcm`))
         if (typeof msg !== "object") throw new TypeError(chalk.default.magenta(this.lang.notaobject.replace("{}", "message") + chalk.default.gray(`${this.lang.example}:\nhttps://github.com/Zero-Brazil734/dbcm`)))
         if (!Array.isArray(args)) throw new TypeError(chalk.default.magenta(this.lang.notaarray.replace("{}", "args") + chalk.default.gray(`${this.lang.example}:\nhttps://github.com/Zero-Brazil734/dbcm`)))
-        if (this.settings.runCommand.cooldown.time !== undefined && this.settings.runCommand.cooldown.time !== null && typeof this.settings.runCommand.cooldown.time !== "number" && this.settings.runCommand.cooldown.time >= 0 && this.settings.runCommand.cooldown.time < 3000) throw new RangeError(chalk.default.magenta(this.lang.minimumis3))
-        if (this.settings.runCommand.cooldown.time !== undefined && this.settings.runCommand.cooldown.time !== null && typeof this.settings.runCommand.cooldown.time !== "number" && this.settings.runCommand.cooldown.time > 60000 * 5) throw new RangeError(chalk.default.magenta(this.lang.maximumis5))
+        if (this.settings.runCommand.cooldown !== undefined && this.settings.runCommand.cooldown.time !== undefined && typeof this.settings.runCommand.cooldown.time !== "number" && this.settings.runCommand.cooldown.time >= 0 && this.settings.runCommand.cooldown.time < 3000) throw new RangeError(chalk.default.magenta(this.lang.minimumis3))
+        if (this.settings.runCommand.cooldown !== undefined && this.settings.runCommand.cooldown.time !== undefined && typeof this.settings.runCommand.cooldown.time !== "number" && this.settings.runCommand.cooldown.time > 60000 * 5) throw new RangeError(chalk.default.magenta(this.lang.maximumis5))
         if (this.settings.runCommand.cooldown !== undefined && this.settings.runCommand.cooldown.time !== undefined && this.settings.runCommand.cooldown.msg === "undefined" && this.settings.runCommand.cooldown.time >= 3000 && this.settings.runCommand.cooldown.msg !== undefined && this.settings.runCommand.cooldown.msg === "") throw new SyntaxError(chalk.default.magenta(this.lang.cdmsg))
-
-        let cooldownMsg = this.settings.runCommand.cooldown.msg
-        let cdresult = cooldownMsg.replace("%{message.author}", msg.author).replace("%{message.author.id}", msg.author.id).replace("%{message.guild.id}", msg.guild.id).replace("%{message.guild.name}", msg.guild.name).replace("%{cmd.cooldown}", String(this.settings.runCommand.cooldown.time))
-
-        let blackMsg = this.settings.runCommand.blacklist.msg
-        let blresult = blackMsg.replace("%{message.author}", msg.author).replace("%{message.author.id}", msg.author.id).replace("%{message.guild.id}", msg.guild.id).replace("%{message.guild.name}", msg.guild.name)
-    
+        if (this.settings.runCommand.cooldown !== undefined && this.settings.runCommand.cooldown.msg !== undefined) {
+            var cooldownMsg = this.settings.runCommand.cooldown.msg,
+                cdresult = cooldownMsg.replace("%{message.author}", msg.author).replace("%{message.author.id}", msg.author.id).replace("%{message.guild.id}", msg.guild.id).replace("%{message.guild.name}", msg.guild.name).replace("%{cmd.cooldown}", String(this.settings.runCommand.cooldown.time))
+        }
+        if (this.settings.runCommand.cooldown !== undefined && this.settings.runCommand.blacklist.msg !== undefined) {
+            var blackMsg = this.settings.runCommand.blacklist.msg,
+                blresult = blackMsg.replace("%{message.author}", msg.author).replace("%{message.author.id}", msg.author.id).replace("%{message.guild.id}", msg.guild.id).replace("%{message.guild.name}", msg.guild.name)
+        }
 
         if (this.client.commands.get(command)) {
-            try {
-                if (cooldownManager.has(msg.author.id) && this.settings.runCommand.cooldown.msg !== "undefined") {
-                    return this.settings.runCommand.cooldown.msg !== "undefined" && this.settings.runCommand.cooldown.msg !== undefined && this.settings.runCommand.cooldown.msg !== "" ? msg.channel.send(cdresult) : undefined
-                }
-
-                if (this.settings.runCommand.blacklist.list !== [] && this.settings.runCommand.blacklist.list !== undefined && this.settings.runCommand.blacklist.list.includes(msg.author.id) && this.settings.runCommand.blacklist.msg !== "undefined") return msg.channel.send(blresult)
-                hdo == {} ? this.client.commands.get(command).run(this.client, msg, args) : this.client.commands.get(command).run(this.client, msg, args, hdo)
-                if (this.settings.runCommand.cooldown.time >= 3000) cooldownManager.add(msg.author.id)
-                setTimeout(() => {
-                    cooldownManager.delete(msg.author.id)
-                }, this.settings.runCommand.cooldown.time)
-            } catch (err) {
-                throw new Error(err)
+            if (cooldownManager.has(msg.author.id) && this.settings.runCommand.cooldown.msg !== "undefined") {
+                return this.settings.runCommand.cooldown.msg !== "undefined" && this.settings.runCommand.cooldown.msg !== undefined && this.settings.runCommand.cooldown.msg !== "" ? msg.channel.send(cdresult) : undefined
             }
-        }
-        if (this.client.aliases.get(command)) {
-            try {
-                if (cooldownManager.has(msg.author.id)) {
-                    return msg.channel.send(this.settings.runCommand.cooldown.msg)
-                }
-                if (this.settings.runCommand.blacklist.list !== [] && this.settings.runCommand.blacklist.list !== undefined && this.settings.runCommand.blacklist.list.includes(msg.author.id) && this.settings.runCommand.blacklist.msg !== "undefined") return msg.channel.send(this.settings.runCommand.blacklist.msg)
-                hdo == {} ? this.client.aliases.get(command).run(this.client, msg, args) : this.client.aliases.get(command).run(this.client, msg, args, hdo)
+
+            if (this.settings.runCommand.blacklist.list !== [] && this.settings.runCommand.blacklist.list !== undefined && this.settings.runCommand.blacklist.list.includes(msg.author.id) && this.settings.runCommand.blacklist.msg !== "undefined") return msg.channel.send(blresult)
+            hdo == {} ? this.client.commands.get(command).run(this.client, msg, args) : this.client.commands.get(command).run(this.client, msg, args, hdo)
+            if (this.settings.runCommand.cooldown !== undefined && this.settings.runCommand.cooldown.time !== undefined && this.settings.runCommand.cooldown.time >= 3000) {
                 cooldownManager.add(msg.author.id)
                 setTimeout(() => {
                     cooldownManager.delete(msg.author.id)
-                }, this.settings.runCommand.cooldown.time)
-            } catch (err) {
-                throw new Error(err)
+                }, this.settings.runCommand.cooldown.time ? this.settings.runCommand.cooldown.time : 0)
+            }
+        }
+        if (this.client.aliases.get(command)) {
+            if (cooldownManager.has(msg.author.id)) {
+                return msg.channel.send(this.settings.runCommand.cooldown.msg)
+            }
+            if (this.settings.runCommand.blacklist.list !== [] && this.settings.runCommand.blacklist.list !== undefined && this.settings.runCommand.blacklist.list.includes(msg.author.id) && this.settings.runCommand.blacklist.msg !== "undefined") return msg.channel.send(this.settings.runCommand.blacklist.msg)
+            hdo == {} ? this.client.aliases.get(command).run(this.client, msg, args) : this.client.aliases.get(command).run(this.client, msg, args, hdo)
+
+            if (this.settings.runCommand.cooldown !== undefined && this.settings.runCommand.cooldown.time !== undefined && this.settings.runCommand.cooldown.time >= 3000) {
+                cooldownManager.add(msg.author.id)
+                setTimeout(() => {
+                    cooldownManager.delete(msg.author.id)
+                }, this.settings.runCommand.cooldown.time ? this.settings.runCommand.cooldown.time : 0)
             }
         }
     }
@@ -224,26 +222,14 @@ class CmdManager {
 
         if (!cooldownManager.has(userid)) return
 
-        try {
-            cooldownManager.delete(userid)
-        } catch (err) {
-            throw new Error(err)
-        }
+        cooldownManager.delete(userid)
     }
 
     /**
      * @param {*} - Resets the cooldowns of everyone
      */
     resetAllCooldown() {
-        try {
-            cooldownManager.clear()
-        } catch (err) {
-            throw new Error(err)
-        }
-    }
-
-    config(data) {
-        return this.data = data
+        cooldownManager.clear()
     }
 }
 

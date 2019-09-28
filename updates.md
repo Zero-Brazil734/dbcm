@@ -90,3 +90,6 @@
       }
   })
   ```
+
+### DBCM v1.2.4
+- Fix some 'undefineds' errors and remove all try and catch because it was hiding the error location
