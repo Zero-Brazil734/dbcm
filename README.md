@@ -43,7 +43,7 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
          * %{message.author.id} - The message author's user ID
          * %{message.guild.name} - The guild name
          * ${message.guild.id} - The id of guild
-         * %{cmd.cooldown} - The cooldown of cmd in milliseconds. WARNING: That will appear in String type.
+         * %{cmd.cooldown} - The cooldown of cmd in seconds. WARNING: That will appear in String type.
         */
         },
 

@@ -74,7 +74,7 @@
                * %{message.author.id} - The message author's user ID
                * %{message.guild.name} - The guild name
                * ${message.guild.id} - The id of guild
-               * %{cmd.cooldown} - The cooldown of cmd in milliseconds. WARNING: That will appear in String type.
+               * %{cmd.cooldown} - The cooldown of cmd in seconds. WARNING: That will appear in String type.
               */
           },
           blacklist: {
@@ -103,3 +103,6 @@
   //...
   cm.runCommand(cmd, msg, args).catch(err => console.error(err))
   ```
+
+### DBCM v1.2.6
+- Change the %{cmd.cooldown} from milliseconds to seconds
