@@ -15,13 +15,18 @@
     "whereisnameandaliases": "[DBCM] Nesse arquivo {} não existe uma das configurações de 'name' ou 'aliases'.",
     "notastring3": "[DBCM] Nesse arquivo {}, o tipo de name precisa ser String.",
     "typeofaliases": "[DBCM] Nesse arquivo {}, o tipo de aliases precisa ser String ou Array.",
-    "nameloaded": "[DBCM] Nome do arquivo de comando {} salvo com sucesso.",
-    "aliasloaded": "[DBCM] Alias do arquivo de comando {} salvo com sucesso.",
+    "nameloaded": "[DBCM] '{}' - nome do comando salvo com sucesso",
+    "aliasloaded": "[DBCM] '{}' - alias do comando salvo com sucesso.",
     "success": "[DBCM] Todos os comandos salvos com sucesso.",
+    "blacklist": "[DBCM] Todos do blacklist salvo com sucesso",
     "notastring4": "DBCM Error: O usuário para resetar o cooldown precisa ser String.",
     "unknownuser": "DBCM Error: Esse usuário é inexistente.",
     "notastringorarray": "DBCM Error: O tipo do {} precisa ser String ou Array.",
     "unknownData": "DBCM Error: '{}' não é um dado de Discord Status. Espera-se: 'summary', 'status', 'unresolved_incidents', 'all_incidents', 'upcoming_maintenances', 'active_maintenances', 'all_maintenances'",
     "isNaN": "DBCM Error: o resultado de parse do '{}' é NaN(Not a Number).",
-    "deprecated": "DBCM Deprecated Action Error: Esse método está 'deprecated'(descontinuada). Por favor, veja os novos exemplos do https://github.com/Zero-Brazil734/dbcm/blob/master/updates.md para saber da nova atualização."
+    "deprecated": "DBCM Deprecated Action Error: Esse método está 'deprecated'(descontinuada). Por favor, veja os novos exemplos do https://github.com/Zero-Brazil734/dbcm/blob/master/updates.md para saber da nova atualização.",
+    "asdf": "'{}' não é um ID de usuário do Discord",
+    "existsFalse": "Esse diretório ou arquivo '{}' não existe",
+    "reconnecting": "[DBCM] A conexão com o websocket foi desconectado e conectando novamente...",
+    "successfullyReconnected": "[DBCM] Conectado novamente no WebSocket com sucesso!"
 }

@@ -30,38 +30,40 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
 - 명령어 저장법 : Saving cmds : Salvando os cmds
   ```js
   const Discord = require("discord.js")
-  const client = new Discord.Client()
   const dbcm = require("dbcm")
-  const CmdManager = new dbcm.bot(client, { 
-    lang: "kr",  //default: en(english),
-    runCommand: {
-      cooldown: {
-        time: 3000, //3 seconds
-        msg: "%{message.author}, you're in cooldown to use the commands."
-        /**
-         * %{message.author} - mentions the author of msg
-         * %{message.author.id} - The message author's user ID
-         * %{message.guild.name} - The guild name
-         * ${message.guild.id} - The id of guild
-         * %{cmd.cooldown} - The cooldown of cmd in seconds. WARNING: That will appear in String type.
-        */
-        },
+  const client = new dbcm.Client({ 
+    lang: "ko-KR",  //default: en(english)
+    disableEveryone: true, //discord.js client options are also valid.
+    autoReconnect: true //This will cause the bot to automatically reconnect if it disconnects
+    dev: "Dev ID" || ["Dev1", "Dev2"], //Setting devs that will ignore cooldown and blacklist
+    ignoresCooldown: ["User1", "User2"], //Specifying users to ignore cooldowns
+    ignoreCooldownIfIsAdmin: true, //This will cause them to ignore cooldowns if they have admin permission
+    cooldown: {
+      time: 3000, //3 seconds
+      msg: "%{message.author}, you're in cooldown to use the commands."
+      /**
+        * %{message.author} - mentions the author of msg
+        * %{message.author.id} - The message author's user ID
+        * %{message.guild.name} - The guild name
+        * %{message.guild.id} - The id of guild
+        * %{cmd.cooldown} - The cooldown of cmd in seconds. WARNING: That will appear in String type. Please use client.cooltime to get in Number type
+      */
+    },
 
-      blacklist: {
-        list: ["User ID"],
-        msg: "%{message.author}, you're on blacklist."
-        /**
-         * %{message.author} - mentions the author of msg
-         * %{message.author.id} - The message author's user ID
-         * %{message.guild.name} - The guild name
-         * ${message.guild.id} - The id of guild
-        */
-      }
+    blacklist: {
+      list: ["User ID"],
+      msg: "%{message.author}, you're on blacklist."
+      /**
+        * %{message.author} - mentions the author of msg
+        * %{message.author.id} - The message author's user ID
+        * %{message.guild.name} - The guild name
+        * ${message.guild.id} - The id of guild
+      */
     }
   }) 
   //Supported languages: kr(korean), en(english) and pt(portuguese-brazil)
 
-  CmdManager.registerCommands(`${__dirname}/commands/`, { createSample: true, jsFilter: true }) //명령어 등록 : Registering the cmds : Registrando os cmds
+  client.registerCommands(`${__dirname}/commands/`, { createSample: true, jsFilter: true }) //명령어 등록 : Registering the cmds : Registrando os cmds
   /** 
    * 위 코드를 CmdManager.registerCommands(`${__dirname}/commands/`)만 입력하신다면 위 두개의 설정들이 기본 설정인 true로 진행됩니다.
    * If you type only CmdManager.registerCommands(`${__dirname}/commands`), the two settings above will remain true which is the default.
@@ -88,12 +90,21 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
       */
       
       
-      CmdManager.runCommand(command, msg, args, { dbpassword: "asdf1234", dbuser: "Anonymous" }) //명령어 로딩 : Loading the commands : Carregando os comandos
+      client.runCommand(command, msg, args, { dbpassword: "asdf1234", dbuser: "Anonymous" }) //명령어 로딩 : Loading the commands : Carregando os comandos
       //쿨타임은 기본 설정이 비활성화입니다. : The default is cooldown disabled : O padrão é cooldown desativado
   
       //아래의 두 명령어는 ~~귀찮아서~~ index 형식으로 써두었습니다. : I wrote these two commands in index form because I was too lazy to explain how to handler : eu escrevi esses dois comandos em forma de index porque fiquei com preguiça de explicar como handler
-      if(msg.author.id === "개발자의 유저ID(Dev UserID)" && command === "쿨타임초기화") {
-        CmdManager.resetCooldown(args[0])
+      if(msg.author.id === "개발자의 유저ID(Dev UserID)" && command === "cooldown") {
+        switch(args[0]) {
+          case "add":
+            client.setCooldown(args[1] ? args[1] : msg.author.id)
+            break;
+          case "remove":
+            client.deleteCooldown(args[1] ? args[1] : msg.author.id)
+            break;
+          default: 
+            msg.reply(" unknown options")
+        }
         /**
          * '쿨타임초기화'의 바로 뒷부분의 문자열로 유저ID를 찾은 뒤 초기화(존재하지 않을시에 터미널에 오류 출력)
          * Searches and resets with user with id behind '쿨타임초기화' and if not exists emits the error
@@ -101,7 +112,7 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
         */
       }
 
-      if(msg.author.id === "개발자의 유저ID" && command === "모든쿨초기화") {
+      if(msg.author.id === "Dev UserID" && command === "모든쿨초기화") {
         CmdManager.resetAllCooldown()
         /**
          * 모든 쿨타임 초기화
@@ -109,12 +120,14 @@ O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamen
          * Reseta os cooldowns de todos os usuários
         */
       }
+
+      //Other methods you may discover through IntelliSense
   })
   ```
 
   - 유틸리티 : Utility : Utilidades 
   ```js
-  const utils = new dbcm.utils({ lang: "kr" }) //default: English
+  const utils = new dbcm.utils({ lang: "ko-KR" }) //default: English
 
   client.on("message", async msg => {
     //... (message config)

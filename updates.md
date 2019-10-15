@@ -106,3 +106,38 @@
 
 ### DBCM v1.2.6
 - Change the %{cmd.cooldown} from milliseconds to seconds
+
+### DBCM v1.2.7
+- Moved the class constructor to discord.js client
+  * New Example: 
+  ```js
+  const dbcm = require("dbcm")
+  const client = new dbcm.Client({
+      lang: "en-US",
+      disableEveryone: true,
+      disabledEvents: ["TYPING_START"]
+      autoReconnect: true,
+      dev: "Dev ID" || ["Dev1", "Dev2"]
+      ignoresCooldown: ["User1"],
+      ignoreCooldownIfIsAdmin: true,
+      blacklist: {
+          list: ["User1"],
+          msg: "something"
+      },
+      cooldown: {
+          time: 3000,
+          msg: "something"
+      }
+  })
+
+  client.registerCommands(__dirname+"/commands/", { createSample: true, jsFilter: true }).catch(err => console.error(err))
+
+  client.on("message", async message => {
+      //message event options
+
+      const args = msg.content.slice("<prefix>".length).trim().split(/ +/g)
+      const cmd = args.shift().toLowerCase()
+
+      client.runCommand(cmd, message, args)
+  })
+  ```
