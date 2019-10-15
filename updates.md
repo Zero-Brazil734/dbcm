@@ -143,4 +143,4 @@
   ```
 
 ### DBCM v1.2.8
-- Fix multiple 'All cmds saved successfully.', sorry for incovenience.
+- Fix multiple 'All cmds saved successfully.', sorry for inconvenience.
