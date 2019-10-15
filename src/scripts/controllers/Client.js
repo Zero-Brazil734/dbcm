@@ -133,8 +133,8 @@ class DBCM_Client extends Client {
 
             filtered.forEach(async name => {
                 await this.registerCommand(`${commandsPath.endsWith("/") ? commandsPath + name : `${commandsPath}/${name}`}`)
-                console.log(chalk.cyan(this.locale.success))
             })
+            console.log(chalk.cyan(this.locale.success))
         })
     }
 
