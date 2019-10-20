@@ -1,0 +1,50 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 7,
+        "ecmaFeatures": {
+            "arrowFunctions": true,
+            "classes": true,
+            "destructuring": true,
+            "modules": true
+        },
+        "sourceType": "script"
+    },
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "overrides": [
+        {
+            "files": [
+                "**/*.md/*.js"
+            ],
+            "rules": {
+                "strict": "off"
+            }
+        }
+    ],
+    "parser": "babel-eslint",
+    "rules": {
+        "indent": [
+            "warn",
+            4
+        ],
+        "quotes": [
+            "warn",
+            "double",
+            {
+                "allowTemplateLiterals": true
+            }
+        ],
+        "semi": 0,
+        "no-trailing-spaces": 0,
+        "keyword-spacing": 0,
+        "no-multiple-empty-lines": 0,
+        "space-before-function-paren": 0,
+        "eol-last": 0,
+        "no-continue": 2,
+        "no-duplicate-case": 1,
+        "no-duplicate-imports": 2,
+        "prefer-arrow-callback": 2
+    }
+}
