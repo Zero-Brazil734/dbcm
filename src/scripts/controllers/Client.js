@@ -16,10 +16,11 @@ class DBCM_Client extends Client {
         this.blacklist = new Collection()
         this.commands = new Collection()
         this.aliases = new Collection()
+        this.models = new Collection()
         this.options = options
 
 
-        switch (options.locale) {
+        switch (options.locale !== undefined ? options.locale : options.lang) {
         case "ko-KR":
             console.log(chalk.yellow("[DBCM] 언어 설정 완료 - 한국어"))
             this.locale = lang.kr
@@ -96,10 +97,6 @@ class DBCM_Client extends Client {
         if (isError(options.jsFilter)) {
             throw new TypeError(chalk.gray(this.locale.notaboolean.replace("{}", "jsFilter") + `${this.locale.example}:\nhttps://github.com/Zero-Brazil734/dbcm`))
         }
-        if (fs.existsSync(commandsPath) === false) {
-            setTimeout(() => process.exit(), 1000)
-            throw new ReferenceError(chalk.red(this.locale.existsFalse.replace("{}", commandsPath)))
-        }
 
         fs.readdir(commandsPath, async (err, files) => {
             if (err) {
@@ -109,6 +106,10 @@ class DBCM_Client extends Client {
                     console.log(chalk.yellow(this.locale.createdir.replace("{}", "commands")));
                     process.exit()
                 } else {
+                    if (fs.existsSync(commandsPath) === false) {
+                        setTimeout(() => process.exit(), 1000)
+                        throw new ReferenceError(chalk.red(this.locale.existsFalse.replace("{}", commandsPath)))
+                    }
                     throw new Error(err)
                 }
             }
@@ -255,11 +256,11 @@ class DBCM_Client extends Client {
         if (this.commands.get(command)) {
             if (this.blacklist.get(message.author.id) && opt !== undefined && black !== undefined && black.list !== undefined) {
                 let dev = this.options.dev
-                if(typeof dev === "string" && message.author.id !== dev) return black.msg !== undefined ? message.channel.send(black.msg) : null
-                if(Array.isArray(dev) && !dev.includes(message.author.id)) return black.msg !== undefined ? message.channel.send(black.msg) : null
+                if(typeof dev === "string" && message.author.id !== dev) return black.msg !== undefined ? message.channel.send(black.msg.replace("%{message.author}", message.author).replace("%{message.author.id}", message.author.id).replace("%{message.guild.name}", message.guild.name).replace("%{message.guild.id}", message.guild.id)) : null
+                if(Array.isArray(dev) && !dev.includes(message.author.id)) return black.msg !== undefined ? message.channel.send(black.msg.replace("%{message.author}", message.author).replace("%{message.author.id}", message.author.id).replace("%{message.guild.name}", message.guild.name).replace("%{message.guild.id}", message.guild.id)) : null
             }
             if (this.cooldown.get(message.author.id) && opt !== undefined && cool !== undefined && cool.time !== undefined) {
-                return cool.msg !== undefined ? message.channel.send(cool.msg) : null
+                return cool.msg !== undefined ? message.channel.send(cool.msg.replace("%{message.author}", message.author).replace("%{message.author.id}", message.author.id).replace("%{message.guild.name}", message.guild.name).replace("%{message.guild.id}", message.guild.id).replace("%{cmd.cooldown}", cool.time)) : null
             }
 
             hdo !== {} ? this.commands.get(command).run(this, message, args) : this.commands.get(command).run(this, message, args, hdo)
@@ -280,11 +281,11 @@ class DBCM_Client extends Client {
         if (this.aliases.get(command)) {
             if (this.blacklist.get(message.author.id) && opt !== undefined && black !== undefined && black.list !== undefined) {
                 let dev = this.options.dev
-                if(typeof dev === "string" && message.author.id !== dev) return black.msg !== undefined ? message.channel.send(black.msg) : null
-                if(Array.isArray(dev) && !dev.includes(message.author.id)) return black.msg !== undefined ? message.channel.send(black.msg) : null
+                if(typeof dev === "string" && message.author.id !== dev) return black.msg !== undefined ? message.channel.send(black.msg.replace("%{message.author}", message.author).replace("%{message.author.id}", message.author.id).replace("%{message.guild.name}", message.guild.name).replace("%{message.guild.id}", message.guild.id)) : null
+                if(Array.isArray(dev) && !dev.includes(message.author.id)) return black.msg !== undefined ? message.channel.send(black.msg.replace("%{message.author}", message.author).replace("%{message.author.id}", message.author.id).replace("%{message.guild.name}", message.guild.name).replace("%{message.guild.id}", message.guild.id)) : null
             }
             if (this.cooldown.get(message.author.id) && opt !== undefined && cool !== undefined && cool.time !== undefined) {
-                return cool.msg !== undefined ? message.channel.send(cool.msg) : null
+                return cool.msg !== undefined ? message.channel.send(cool.msg.replace("%{message.author}", message.author).replace("%{message.author.id}", message.author.id).replace("%{message.guild.name}", message.guild.name).replace("%{message.guild.id}", message.guild.id).replace("%{cmd.cooldown}", cool.time)) : null
             }
 
             hdo !== {} ? this.aliases.get(command).run(this, message, args) : this.aliases.get(command).run(this, message, args, hdo)

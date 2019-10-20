@@ -143,4 +143,15 @@
   ```
 
 ### DBCM v1.2.8
-- Fix multiple 'All cmds saved successfully.', sorry for inconvenience.
+- Fixed multiple 'All cmds saved successfully.', sorry for inconvenience.
+
+### DBCM v1.2.9
+- Fixed many bugs, such as 'Unknown Language Error'. Now you can also set your language to 'lang'.
+
+ ```js
+ //...
+ const client = new dbcm.Client({
+     lang: "en-US",
+     locale: "en-US"
+ })
+ ```
