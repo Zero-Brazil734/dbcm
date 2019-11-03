@@ -6,11 +6,11 @@
     "minimumis3": "DBCM Error: O cooldown mínimo de comando é 3 segundos.",
     "maximumis5": "DBCM Error: O cooldown máximo de comando é 5 minutos",
     "cdmsg": "DBCM Error: Defina uma mensagem para enviar se o usuário estiver em cooldown.",
-    "notastring2": "DBCM Error: O diretório de comandos precisa ser em String.\n",
+    "notastring2": "DBCM Error: A pasta de comandos precisa ser em String.\n",
     "notaboolean": "DBCM Error: O tipo do {} precisa ser Boolean(true/false).\n",
     "createdir": "[DBCM] Criando a pasta {}",
     "createSample": "[DBCM] Identifiquei que não existe comandos nessa pasta então criarei uma.",
-    "files": "DBCM Error: Esse diretório({}) não contém nenhum arquivos.",
+    "files": "DBCM Error: Essa pasta({}) não contém nenhum arquivos.",
     "notaexportsconfig": "[DBCM] Nesse arquivo {} não existe a configuração do comando. Dica: Se você usa o exports.help troque para exports.config.",
     "whereisnameandaliases": "[DBCM] Nesse arquivo {} não existe uma das configurações de 'name' ou 'aliases'.",
     "notastring3": "[DBCM] Nesse arquivo {}, o tipo de name precisa ser String.",
@@ -26,7 +26,9 @@
     "isNaN": "DBCM Error: o resultado de parse do '{}' é NaN(Not a Number).",
     "deprecated": "DBCM Deprecated Action Error: Esse método está 'deprecated'(descontinuada). Por favor, veja os novos exemplos do https://github.com/Zero-Brazil734/dbcm/blob/master/updates.md para saber da nova atualização.",
     "asdf": "'{}' não é um ID de usuário do Discord",
-    "existsFalse": "Esse diretório ou arquivo '{}' não existe",
+    "existsFalse": "Essa pasta ou arquivo '{}' não existe",
     "reconnecting": "[DBCM] A conexão com o websocket foi desconectado e conectando novamente...",
-    "successfullyReconnected": "[DBCM] Conectado novamente no WebSocket com sucesso!"
+    "successfullyReconnected": "[DBCM] Conectado novamente no WebSocket com sucesso!",
+    "nomodel": "Não existe models nessa pasta selecionada: '{}'",
+    "modelwassaved": "'{}' model foi salvado com sucesso."
 }

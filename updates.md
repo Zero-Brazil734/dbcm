@@ -155,3 +155,14 @@
      locale: "en-US"
  })
  ```
+
+## DBCM v1.3.0
+- The integration of mongoose(MongoDB). "Shortcuts" interacting with db will be released later
+  
+ ```js
+ //...
+ client.database.connect("", { useUnifiedTopology: true, useNewUrlParser: true }) //<-- Defaults
+                       //^ This can be: mongodb://localhost/<your project>
+
+ client.database.registerModels(__dirname + "/models") //mongoose models folder will be configured to be integrated within the client here
+ ```

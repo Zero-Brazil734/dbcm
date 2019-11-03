@@ -6,11 +6,11 @@
     "minimumis3": "DBCM Error: 명령어의 쿨타임은 최소 3초입니다.",
     "maximumis5": "DBCM Error: 명령어의 쿨타임은 최대 5분입니다.",
     "cdmsg": "DBCM Error: 명령어의 쿨타임 메세지를 설정 해주세요.",
-    "notastring2": "DBCM Error: 명령어의 디렉터리는 String(문자열) 형식이여야 합니다.\n",
+    "notastring2": "DBCM Error: 명령어의 폴더는 String(문자열) 형식이여야 합니다.\n",
     "notaboolean": "DBCM Error: {}은 Boolean(true/false)이여야 합니다.\n",
     "createdir": "[DBCM] {} 폴더를 생성합니다.",
     "createSample": "[DBCM] 명령어 파일이 존재하지 않는것으로 확인되어 샘플 파일을 생성합니다.",
-    "files": "DBCM Error: 해당 디렉터리, {}에는 파일이 존재하지 않습니다.",
+    "files": "DBCM Error: 해당 폴더, {}에는 파일이 존재하지 않습니다.",
     "notaexportsconfig": "[DBCM] 해당 {} 파일에는 명령어의 설정란이 존재하지 않습니다. TIP: 만약 exports.help 설정란을 사용하신다면 exports.config로 바꿔주세요.",
     "whereisnameandaliases": "[DBCM] 해당 {} 파일에는 명령어의 설정란에서 name 또는 aliases 설정이 존재하지 않습니다.",
     "notastring3": "[DBCM] 해당 {} 파일의 설정란 중 name 항목은 String(문자열)이여야 합니다.",
@@ -26,7 +26,9 @@
     "isNaN": "DBCM Error: '{}'의 파싱 결과는 NaN(Not a Number)입니다.",
     "deprecated": "DBCM Deprecated Action Error: 해당 메소드는 deprecate 되었습니다. 새로운 업데이트로 인한 달라진 점을 확인하시려면 https://github.com/Zero-Brazil734/dbcm/blob/master/updates.md 의 예시를 확인 해주세요.",
     "asdf": "'{}'은 디스코드의 유저ID 형식이 아닙니다.",
-    "existsFalse": "해당 디렉터리/파일 '{}'은 존재하지 않습니다.",
+    "existsFalse": "해당 폴더/파일 '{}'은 존재하지 않습니다.",
     "reconnecting": "[DBCM] 웹소켓 접속이 끊어져 연결 시도 중입니다...",
-    "successfullyReconnected": "[DBCM] 웹소켓에 성공적으로 재접속 하였습니다."
+    "successfullyReconnected": "[DBCM] 웹소켓에 성공적으로 재접속 하였습니다.",
+    "nomodel": "해당 폴더('{}') 내에는 모델이 존재하지 않습니다.",
+    "modelwassaved": "'{}' 모델이 성공적으로 저장 되었습니다."
 }

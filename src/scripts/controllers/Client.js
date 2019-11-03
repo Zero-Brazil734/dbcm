@@ -2,6 +2,8 @@ const { Collection, Client } = require("discord.js")
 const chalk = require("chalk").default
 const fs = require("fs")
 const { mergeDefault } = require("discord.js/src/util/Util")
+const defaults = require("../defaults.js")
+const Database = require("./database/index")
 const lang = {
     kr: require("../../locales/kr.json"),
     en: require("../../locales/en.json"),
@@ -9,28 +11,31 @@ const lang = {
 }
 
 class DBCM_Client extends Client {
-    constructor(options = {}) {
+    constructor(options = defaults.clientOptions) {
         super(options)
 
         this.cooldown = new Collection()
         this.blacklist = new Collection()
         this.commands = new Collection()
         this.aliases = new Collection()
-        this.models = new Collection()
+
         this.options = options
+        this.defaults = defaults
+
+        this.database = new Database(this)
 
 
         switch (options.locale !== undefined ? options.locale : options.lang) {
         case "ko-KR":
-            console.log(chalk.yellow("[DBCM] 언어 설정 완료 - 한국어"))
+            console.log(chalk.green("[") + chalk.blue("DBCM") + chalk.green("]") + chalk.yellow(" 언어 설정 완료 - 한국어"))
             this.locale = lang.kr
             break;
         case "pt-BR":
-            console.log(chalk.yellow("[DBCM] Linguagem configurado com sucesso - Português(Brasil)"))
+            console.log(chalk.green("[") + chalk.blue("DBCM") + chalk.green("]") + chalk.yellow(" Linguagem configurado com sucesso - Português(Brasil)"))
             this.locale = lang.pt
             break;
         case "en-US":
-            console.log(chalk.yellow("[DBCM] Language setting was completed - English"))
+            console.log(chalk.green("[") + chalk.blue("DBCM") + chalk.green("]") + chalk.yellow(" Language setting was completed - English"))
             this.locale = lang.en
             break;
         default:
@@ -83,8 +88,8 @@ class DBCM_Client extends Client {
      * @param {string} commandsPath - The folder containing the command files
      * @param {object} options - Registering options
      */
-    async registerCommands(commandsPath, options = {}) {
-        options = mergeDefault(require("../defaults").registerCommands, options)
+    async registerCommands(commandsPath, options = defaults.registerCommands) {
+        options = mergeDefault(defaults.registerCommands, options)
         if (typeof commandsPath !== "string") throw new TypeError(chalk.red(this.locale.notastring.replace("{}", commandsPath)))
 
         function isError(asdf) {

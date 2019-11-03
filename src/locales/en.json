@@ -6,11 +6,11 @@
     "minimumis3": "DBCM Error: The minimum cooldown of cmd is 3 seconds.",
     "maximumis5": "DBCM Error: The maximum cooldown of cmd is 5 minutes.",
     "cdmsg": "DBCM Error: Set a message to send if the user is in cooldown please.",
-    "notastring2": "DBCM Error: The type of directory of cmds must be a String\n",
+    "notastring2": "DBCM Error: The type of folder of cmds must be a String\n",
     "notaboolean": "DBCM Error: the type of {} must be a Boolean(true/false).\n",
     "createdir": "[DBCM] Creating the folder {}",
     "createSample": "[DBCM] I identified that there are no commands in this folder so I will create one.",
-    "files": "DBCM Error: This directory({}) no contains any files.",
+    "files": "DBCM Error: This folder({}) no contains any files.",
     "notaexportsconfig": "[DBCM] This archive {} no contains configs of cmd. TIP: If are using exports.help, change it for exports.config please.",
     "whereisnameandaliases": "[DBCM] This archive {} no contains configs of 'name' or 'aliases' of cmd.",
     "notastring3": "[DBCM] In this archive {}, the type of 'name' must be a String.",
@@ -26,7 +26,9 @@
     "isNaN": "DBCM Error: The parsing result of '{}' is a NaN(Not a Number).",
     "deprecated": "DBCM Deprecated Action Error: This method is deprecated. Please see the new examples from https://github.com/Zero-Brazil734/dbcm/blob/master/updates.md for new update features.",
     "asdf": "'{}' isn't a discord UserID",
-    "existsFalse": "This directory or file '{}' does not exist.",
+    "existsFalse": "This folder or file '{}' does not exist.",
     "reconnecting": "[DBCM] The WebSocket connection has been disconnected and reconnecting...",
-    "successfullyReconnected": "[DBCM] Successfully reconnected to WebSocket"
+    "successfullyReconnected": "[DBCM] Successfully reconnected to WebSocket",
+    "nomodel": "There are no models in this selected folder: '{}'",
+    "modelwassaved": "'{}' model was saved successfully."
 }

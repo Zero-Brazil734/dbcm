@@ -31,14 +31,14 @@ class Utils {
             break;
         default:
             this.lang = locales.en
-            throw new ReferenceError(chalk.red("DBCM Error: Unknown Language was configured. '" + options.lang + "' is probably not supported by DBCM. Set by default, which is 'English'."))
+            console.warn(chalk.red("DBCM Error: Unknown Language was configured. '" + options.lang + "' is probably not supported by DBCM. Set by default, which is 'English'."))
         }
     }
 
     /**
      * @param {string|string[]} text - Reverse array or string content (Example: 'this is a testing msg' => 'gsm gnitset a si siht')
      */
-    static async reverse(text) {
+    async reverse(text) {
         if (typeof text !== "string" && !Array.isArray(text)) throw new TypeError(chalk.magenta(this.lang.notastringorarray.replace("{}", "text")))
 
         if (typeof text == "string") {
@@ -53,7 +53,7 @@ class Utils {
      * @param {object} options - Options of filtering
      * @param {boolean} options.toNumber - Set whether to convert to number
      */
-    static async numberFilter(text, options = { toNumber: false }) {
+    async numberFilter(text, options = { toNumber: false }) {
         if (typeof text !== "string") throw new TypeError(chalk.magenta(this.lang.notastring.replace("{}", "text")))
 
         let filtered = text.replace(/[^0-9]/g, "")
@@ -75,7 +75,7 @@ class Utils {
      * @param {string} query - The name of data to search in Discord Status API.
      * @param {object} callbackData - Search data result callback.
      */
-    static async discordStatus(query, callbackData) {
+    async discordStatus(query, callbackData) {
         if (typeof query !== "string") throw new TypeError(chalk.magenta(this.lang.notastring.replace("{}", "query")))
 
         switch (query) {
