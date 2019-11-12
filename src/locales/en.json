@@ -30,5 +30,6 @@
     "reconnecting": "[DBCM] The WebSocket connection has been disconnected and reconnecting...",
     "successfullyReconnected": "[DBCM] Successfully reconnected to WebSocket",
     "nomodel": "There are no models in this selected folder: '{}'",
-    "modelwassaved": "'{}' model was saved successfully."
+    "modelwassaved": "'{}' model was saved successfully.",
+    "thisCmdDoesntExists": "Command '{}' doesn't exists in Commands Collection."
 }

@@ -30,5 +30,6 @@
     "reconnecting": "[DBCM] 웹소켓 접속이 끊어져 연결 시도 중입니다...",
     "successfullyReconnected": "[DBCM] 웹소켓에 성공적으로 재접속 하였습니다.",
     "nomodel": "해당 폴더('{}') 내에는 모델이 존재하지 않습니다.",
-    "modelwassaved": "'{}' 모델이 성공적으로 저장 되었습니다."
+    "modelwassaved": "'{}' 모델이 성공적으로 저장 되었습니다.",
+    "thisCmdDoesntExists": "'{}' 명령어는 명령어 리스트에 존재하지 않습니다."
 }

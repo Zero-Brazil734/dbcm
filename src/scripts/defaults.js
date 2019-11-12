@@ -71,6 +71,7 @@ module.exports = {
         blacklist: {
             list: [],
             msg: undefined
-        }
+        },
+        autoRegistryCommands: true
     }
 }

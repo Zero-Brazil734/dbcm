@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 const { mergeDefault } = require("discord.js/src/util/Util")
 const chalk = require("chalk").default
 const { Collection } = require("discord.js")
+const Controller = require("./controller")
 const fs = require("fs")
 const files = {
     en: require("../../../locales/en.json"),
@@ -15,6 +16,8 @@ class Database {
         this.connected = false
 
         this.models = new Collection()
+
+        this.shortcuts = new Controller(this)
 
         switch (this.client.options.locale !== undefined ? this.client.options.locale : this.client.options.lang) {
         case "ko-KR":

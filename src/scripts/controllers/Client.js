@@ -29,19 +29,19 @@ class DBCM_Client extends Client {
         case "ko-KR":
             console.log(chalk.green("[") + chalk.blue("DBCM") + chalk.green("]") + chalk.yellow(" 언어 설정 완료 - 한국어"))
             this.locale = lang.kr
-            break;
+            break
         case "pt-BR":
             console.log(chalk.green("[") + chalk.blue("DBCM") + chalk.green("]") + chalk.yellow(" Linguagem configurado com sucesso - Português(Brasil)"))
             this.locale = lang.pt
-            break;
+            break
         case "en-US":
             console.log(chalk.green("[") + chalk.blue("DBCM") + chalk.green("]") + chalk.yellow(" Language setting was completed - English"))
             this.locale = lang.en
-            break;
+            break
         default:
             this.locale = lang.en
             console.warn(chalk.red("DBCM Language Error: Unknown language, setting to English which is default"))
-            break;
+            break
         }
     }
 
@@ -57,23 +57,24 @@ class DBCM_Client extends Client {
         const cmd = require(path)
 
         if (cmd.config == undefined && cmd.config == null && typeof cmd.config !== "object") {
-            console.error(chalk.red(this.locale.notaexportsconfig.replace("{}", name)))
+            console.error(chalk.red(this.locale.notaexportsconfig.replace("{}", path)))
             process.exit()
         }
         if (cmd.config.name == undefined || cmd.config.aliases == null && cmd.config.name == null || cmd.config.aliases == undefined && typeof cmd.config == "object") {
-            console.error(chalk.red(this.locale.whereisnameandaliases.replace("{}", name)))
+            console.error(chalk.red(this.locale.whereisnameandaliases.replace("{}", path)))
             process.exit()
         }
         if (typeof cmd.config.name !== "string") {
-            console.error(chalk.red(this.locale.notastring3.replace("{}", name)))
+            console.error(chalk.red(this.locale.notastring3.replace("{}", path)))
             process.exit()
         }
         if (!Array.isArray(cmd.config.aliases) && typeof cmd.config.aliases !== "string") {
-            console.error(chalk.red(this.locale.typeofaliases.replace("{}", name)))
+            console.error(chalk.red(this.locale.typeofaliases.replace("{}", path)))
             process.exit()
         }
 
         this.commands.set(cmd.config.name, cmd)
+        cmd.dir = path
         console.log(chalk.green(this.locale.nameloaded.replace("{}", cmd.config.name)))
 
         for (let i = 0; i < cmd.config.aliases.length; i++) {
@@ -108,7 +109,7 @@ class DBCM_Client extends Client {
                 let mkstr = err.message.toString()
                 if (mkstr.includes("ENOENT: no such file or directory, scandir")) {
                     fs.mkdirSync(commandsPath)
-                    console.log(chalk.yellow(this.locale.createdir.replace("{}", "commands")));
+                    console.log(chalk.yellow(this.locale.createdir.replace("{}", "commands")))
                     process.exit()
                 } else {
                     if (fs.existsSync(commandsPath) === false) {
@@ -141,6 +142,7 @@ class DBCM_Client extends Client {
                 await this.registerCommand(`${commandsPath.endsWith("/") ? commandsPath + name : `${commandsPath}/${name}`}`)
             })
             console.log(chalk.cyan(this.locale.success))
+            this.commandsFolder = commandsPath
         })
     }
 
@@ -281,6 +283,8 @@ class DBCM_Client extends Client {
                     this.deleteCooldown(message.author.id)
                 }, parseInt(cool.time, 10))
             }
+
+            return true
         }
 
         if (this.aliases.get(command)) {
@@ -307,7 +311,60 @@ class DBCM_Client extends Client {
                     this.deleteCooldown(message.author.id)
                 }, parseInt(cool.time, 10))
             }
+
+            return true
         }
+    }
+
+    /**
+     * @param {string} command - Command to reload
+     */
+    async reloadCommand(command) {
+        if(typeof command !== "string") throw new TypeError(chalk.red(this.locale.notastring.replace("{}", command)))
+        if (!this.commands.get(command) && !this.aliases.get(command)) throw new ReferenceError(chalk.red(this.locale.thisCmdDoesntExists.replace("{}", command)))
+
+        try {
+            let collection
+
+            if(this.commands.get(command)) { collection = this.commands }
+            else if(this.aliases.get(command)) collection = this.aliases
+
+            let dir = collection.get(command).dir
+            await delete require.cache[dir]
+
+            collection.delete(command)
+
+            this.registerCommand(dir)
+
+            return true
+        } catch(err) {
+            setTimeout(() => { throw new Error("Reloading failed by: "+err) }, 1000)
+            return false
+        }
+    }
+
+    /**
+     * @param {*} - Reload all commands registered.
+     */
+    async reloadAllCommands() {
+        this.aliases.deleteAll()
+
+        this.commands.keyArray().forEach(cmd => {
+            this.reloadCommand(cmd).catch(err => { return { success: false, error: err} })
+        })
+    }
+
+    async deleteCommand(command) {
+        if(typeof command !== "string") throw new TypeError(this.locale.notastring.replace("{}", command))
+        if(!this.commands.get(command) && !this.aliases.get(command)) throw new ReferenceError(this.locale.thisCmdDoesntExists.replace("{}", command))
+
+        let collection
+        if (this.commands.get(command)) { collection = this.commands }
+        else if (this.aliases.get(command)) collection = this.aliases
+        
+        await delete require.cache[this.commands.get(command)]
+
+        collection.delete(command)
     }
 }
 

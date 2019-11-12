@@ -1,162 +1,153 @@
-![MIT](https://img.shields.io/dub/l/vibe-d.svg)
-[![npm](https://img.shields.io/npm/v/npm.svg)](https://www.npmjs.com/package/dbcm)
-[![NPM version](https://badge.fury.io/js/dbcm.svg)](https://www.npmjs.com/package/dbcm)
-
+<h1 align="center">Discord Bot Commands Manager🤖</h1>
+<p>
+  <a href="https://www.npmjs.com/package/dbcm" target="_blank">
+    <img alt="Version" src="https://img.shields.io/npm/v/dbcm.svg">
+  </a>
+  <a href="https://github.com/Zero-Brazil734/dbcm/graphs/commit-activity" target="_blank">
+    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
+  </a>
+  <a href="https://github.com/Zero-Brazil734/dbcm/blob/master/LICENSE" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/github/license/Zero-Brazil734/dbcm" />
+  </a>
+  <a href="https://npmcharts.com/compare/dbcm?minimal=true" target="_blank">
+    <img alt="Downloads" src="https://img.shields.io/npm/dm/dbcm.svg">
+  </a>
+</p>
 <div><center><a href="https://nodei.co/npm/dbcm"><img src="https://nodei.co/npm-dl/dbcm.png"></a></div>
 
+> Discord Bot Commands Manager(dbcm) is project to support discord bot command control in a few lines.
 
-## Discord Bot Commands Manager
-**Discord Bot Commands Manager**(이하 DBCM)은 명령어를 컬렉션에 저장하고 불러오기를 몇줄 만에 끝내 편리하게 해드리기 위해 만들어졌습니다.
-라이브러리 특성상 *discord.js* 모듈 외에는 실행이 안 되니 사용시에 참고 부탁드립니다.
+## Install
 
-**Discord Bot Commands Manager**(DBCM) was created to make it easy to store and load commands in a Collection in just a few lines. Due to the nature of the library, it is only compatible with [Discord](https://discordapp.com) bots using *discord.js*
+- NPM:
+```sh
+npm install dbcm --save
+```
 
-O **Discord Bot Commands Manager**(DBCM) foi criado para facilitar o armazenamento e o carregamento de comandos em uma Collection em apenas algumas linhas. Devido à natureza da biblioteca, é somente compatível com bot de [Discord](https://discordapp.com) que usam *discord.js*
+- Yarn
+```sh
+yarn add dbcm
+```
 
-## DBCM Install
-[참고]: discord.js v11.5 이상부터 호환됩니다.
+## Usage
 
-[Observation]: Compatible since discord.js v11.5 and above.
-
-[OBS]: Somente compatível com discord.js acima de v11.5 ou mais.
-
-```yarn add dbcm```
-또는(or : ou)
-```npm i dbcm --save```
-
-
-### 사용법 : Usage : Como usar
-
-- 명령어 저장법 : Saving cmds : Salvando os cmds
-  ```js
-  const Discord = require("discord.js")
-  const dbcm = require("dbcm")
-  const client = new dbcm.Client({ 
-    lang: "ko-KR",  //default: en(english)
+```js
+const Discord = require("discord.js")
+const dbcm = require("dbcm")
+const client = new dbcm.Client({
+    dev: "Dev ID" || ["Dev ID", "Dev ID"], //That will ignore cooldown and blacklist.
+    lang: "en-US", //This also can be setted by locale. (default: english) Supported languages: kr(korean), en(english) and pt(portuguese-brazil)
     disableEveryone: true, //discord.js client options are also valid.
-    autoReconnect: true //This will cause the bot to automatically reconnect if it disconnects
-    dev: "Dev ID" || ["Dev1", "Dev2"], //Setting devs that will ignore cooldown and blacklist
     ignoresCooldown: ["User1", "User2"], //Specifying users to ignore cooldowns
     ignoreCooldownIfIsAdmin: true, //This will cause them to ignore cooldowns if they have admin permission
     cooldown: {
-      time: 3000, //3 seconds
-      msg: "%{message.author}, you're in cooldown to use the commands."
-      /**
-        * %{message.author} - mentions the author of msg
-        * %{message.author.id} - The message author's user ID
-        * %{message.guild.name} - The guild name
-        * %{message.guild.id} - The id of guild
-        * %{cmd.cooldown} - The cooldown of cmd in seconds. WARNING: That will appear in String type. Please use client.cooltime to get in Number type
-      */
+        time: 3000, //3 seconds
+        msg: "%{message.author}, you're in cooldown to use the commands."
+        /**
+          * %{message.author} - mentions the author of msg
+          * %{message.author.id} - The message author's user ID
+          * %{message.guild.name} - The guild name
+          * %{message.guild.id} - The id of guild
+          * %{cmd.cooldown} - The cooldown of cmd in seconds. WARNING: That will appear in String type. Please use client.cooltime to get in Number type
+        */
     },
 
     blacklist: {
-      list: ["User ID"],
-      msg: "%{message.author}, you're on blacklist."
-      /**
-        * %{message.author} - mentions the author of msg
-        * %{message.author.id} - The message author's user ID
-        * %{message.guild.name} - The guild name
-        * ${message.guild.id} - The id of guild
-      */
+        list: ["User ID"],
+        msg: "%{message.author}, you're on blacklist."
+        /**
+          * %{message.author} - mentions the author of msg
+          * %{message.author.id} - The message author's user ID
+          * %{message.guild.name} - The guild name
+          * ${message.guild.id} - The id of guild
+        */
     }
-  }) 
-  //Supported languages: kr(korean), en(english) and pt(portuguese-brazil)
+})
 
-  client.registerCommands(`${__dirname}/commands/`, { createSample: true, jsFilter: true }) //명령어 등록 : Registering the cmds : Registrando os cmds
-  /** 
-   * 위 코드를 CmdManager.registerCommands(`${__dirname}/commands/`)만 입력하신다면 위 두개의 설정들이 기본 설정인 true로 진행됩니다.
-   * If you type only CmdManager.registerCommands(`${__dirname}/commands`), the two settings above will remain true which is the default.
-   * Se digitar somente CmdManager.registerCommands(`${__dirname}/commands`), as duas configurações acima continuarão como true que é a padrão.
-  */
-  ```
 
-- 명령어 불러오기 : Running the cmds : Executando os cmds
-  ```js
-  client.on("message", async msg => {
-      if(message.system || message.author.bot || message.channel.type === "dm" || !message.content.startsWith("프리픽스(prefix)")) return
+//Registering the commands
+client.registerCommands(require.resolve("./commands"), { createSample: true, jsFilter: true }) 
+/*
+If you type only client.registerCommands(require.resolve("./commands")), 
+the two settings above will remain true which is the default.
+*/
 
-      const args = msg.content.slice("프리픽스(prefix)".length).trim().split(/ +/g) 
-      /**
-       * 프리픽스의 앞부분에서 글자수 만큼과 공백 제거 후, +를 제거하면서 Array화 
-       * Deletes the front by the number of letters in the prefix, removes the whitespace and transforms it to Array by removing the '+' if it has one.
-       * Deleta a parte de frente pela quantidade de letras no prefixo, apaga os espaços em branco e transforma o em Array removendo a '+' se tiver.
-      */
-      const command = args.shift().toLowerCase() 
-      /** 
-       * 'args'에서 제일 앞 문자열을 삭제 후 가져오면서 소문자화
-       * Delete the first String from 'args' and transform it to lowercase
-       * Deleta a primeira String de 'args' e transforma em letra minúscula
-      */
-      
-      
-      client.runCommand(command, msg, args, { dbpassword: "asdf1234", dbuser: "Anonymous" }) //명령어 로딩 : Loading the commands : Carregando os comandos
-      //쿨타임은 기본 설정이 비활성화입니다. : The default is cooldown disabled : O padrão é cooldown desativado
-  
-      //아래의 두 명령어는 ~~귀찮아서~~ index 형식으로 써두었습니다. : I wrote these two commands in index form because I was too lazy to explain how to handler : eu escrevi esses dois comandos em forma de index porque fiquei com preguiça de explicar como handler
-      if(msg.author.id === "개발자의 유저ID(Dev UserID)" && command === "cooldown") {
-        switch(args[0]) {
-          case "add":
-            client.setCooldown(args[1] ? args[1] : msg.author.id)
-            break;
-          case "remove":
-            client.deleteCooldown(args[1] ? args[1] : msg.author.id)
-            break;
-          default: 
-            msg.reply(" unknown options")
-        }
-        /**
-         * '쿨타임초기화'의 바로 뒷부분의 문자열로 유저ID를 찾은 뒤 초기화(존재하지 않을시에 터미널에 오류 출력)
-         * Searches and resets with user with id behind '쿨타임초기화' and if not exists emits the error
-         * Procura e reseta com o usuário com o ID atrás do '쿨타임초기화' e se não existir emite o erro
-        */
-      }
 
-      if(msg.author.id === "Dev UserID" && command === "모든쿨초기화") {
-        CmdManager.resetAllCooldown()
-        /**
-         * 모든 쿨타임 초기화
-         * Resets cooldowns for everyone
-         * Reseta os cooldowns de todos os usuários
-        */
-      }
+//Running the commands
+client.on("message", async message => {
+    //... your if(...) return options
 
-      //Other methods you may discover through IntelliSense
-  })
-  ```
+    const args = message.content.slice("PREFIX".length).trim().split(/ +/g)
+    const command = args.shift().toLowerCase()
+    /*
+    Some ways to get the command, such as message.content.split(" ") and a 
+    few more lines, may not work because the command itself is contained in 
+    the array. To solve this problem if even trying const command = <MessageArray>.shift() 
+    doesn't work out, throw in the issues(https://github.com/Zero-Brazil734/dbcm/issues) 
+    that check what the problem is.
+    */
 
-  - 유틸리티 : Utility : Utilidades 
-  ```js
-  const utils = new dbcm.utils({ lang: "ko-KR" }) //default: English
+    //Running
+    client.runCommand(command, msg, args, { dbpassword: "asdf1234", dbuser: "Anonymous" }) 
+    /*
+    Your own handling data, you can get it by placing it 
+    in the object after args. (And of course you will need 
+    to change the original exports.run to 
+    exports.run = (client, message, args, yourdata) => { <CommandCode> })
+    */
+        .then(runned => {
+            if(runned === true) return //do something
+        })
+        .catch(err => {
+            throw new Error(err)
+        })
+    //The default is cooldown disabled
 
-  client.on("message", async msg => {
-    //... (message config)
-    if(command === "reverse") { //만약 메세지가 'reverse'로 시작한다면 : if message starts with 'reverse' : Se a mensagem começar com 'reverse'
-      msg.channel.send(utils.reverse(msg.content)) //그 메세지의 내용을 반대로 돌려 해당 채널에 전송 : Sending message with the message reversed of what you sent. : Enviara a mensagem com a mensagem revertida do que você mandou.
-      /**
-       * > utils.reverse("test")
-       * > tset
-      */
+    //Utilities
+    if(command === "discordStatus") { 
+        utils.discordStatus("summary" || "status" || "unresolved_incidents" || "all_incidents" || "upcoming_maintenances" || "active_maintenances" || "all_maintenances", data => { //callback of the datas found
+            console.log(data) 
+        //Show this data in object form
+        })
     }
 
-    if(command === "discordStatus" && msg.author.id === "Dev ID") { 
-      utils.discordStatus("summary" || "status" || "unresolved_incidents" || "all_incidents" || "upcoming_maintenances" || "active_maintenances" || "all_maintenances", data => { //검색된 데이터를 callback로 처리 : callback of the datas found : callback de dados encontrados
-        console.log(data) 
+    if(command === "reverse") { 
+        msg.channel.send(utils.reverse(msg.content)) //Sending message with the message reversed of what you sent.
         /**
-         * 그 데이터를 object 형식으로 출력합니다.
-         * Show this data in object form
-         * Mostra esses dados em forma de objeto.
+         * > utils.reverse("test")
+         * > tset
         */
-      })
     }
 
     if(command === "numberFilter") {
-      msg.reply(utils.numberFilter(args.join(" "), { toNumber: false }) //toNumber's default: false
-      /**
-       * 명령어를 제외한 메세지의 내용에서 숫자만 추출한뒤 돌려줍니다.
-       * Filter only the numbers in the message content and return it
-       * Filtra só os números no conteúdo da mensagem e devolve-a 
-      */
+        msg.reply(utils.numberFilter(args.join(" "), { toNumber: false }) //toNumber's default: false
+        //Filter only the numbers in the message content and return it
     }
-  })
-  ```
+
+    //Other methods you may discover through IntelliSense
+})
+```
+
+## Author
+
+👤 **제로ㅣBrazil**
+
+* Github: [@Zero-Brazil734](https://github.com/Zero-Brazil734)
+* Discord: 제로ㅣBrazil#5005
+* Email: zero734kr@gmail.com
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are **very** welcome!<br />Feel free to check [issues page](https://github.com/Zero-Brazil734/dbcm/issues).
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+## 📝 License
+
+Copyright © 2019 [제로ㅣBrazil](https://github.com/Zero-Brazil734).<br />
+This project is [MIT](https://github.com/Zero-Brazil734/dbcm/blob/master/LICENSE) licensed.
+
+***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

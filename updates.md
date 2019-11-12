@@ -165,4 +165,39 @@
                        //^ This can be: mongodb://localhost/<your project>
 
  client.database.registerModels(__dirname + "/models") //mongoose models folder will be configured to be integrated within the client here
+
+ //getting models
+ client.database.models.get("yourmodel").findById("something", (err, res) => {
+     if(err) throw new Error(err)
+ })
+ ```
+
+## DBCM v1.3.1
+- Shortcuts have been added and some useful methods have been added on the client.
+
+```
+WARNING: These are just a few simple shortcuts, 
+and if you want to use your own update options, 
+you'll need to deal directly with the model, 
+such as <model>.findByIdAndUpdate(<query>, <value>, { upsert: true })
+```
+
+ ```js
+ //...
+ client.reloadCommand("eval").then(result => {
+     if(result === true) console.log("Reloading was succeeded.")
+ }).catch(err => { throw new Error(err) })
+
+ client.reloadAllCommands()
+
+ client.deleteCommand("eval")
+
+ client.database.controller.setUpdate("<modelName>", { _id: "dbcm" }, { version: "1.3.1" }, { queryByID: false }) 
+ //queryByID's default: false
+
+ client.database.controller.pushUpdate("<modelName>", "dbcm", { controllers: "default" }, { queryByID: true })
+
+ client.database.controller.watch("<modelName>", data => console.log(data))
+
+ //Other new methods you may discover through IntelliSense
  ```

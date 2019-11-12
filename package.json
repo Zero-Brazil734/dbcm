@@ -1,7 +1,7 @@
 {
   "name": "dbcm",
-  "version": "1.3.0",
-  "description": "Discord Bot Commands Manager은 명령어를 컬렉션에 저장하고 불러오기를 몇줄 만에 끝내 편리하게 해드리기 위해 만들어졌습니다",
+  "version": "1.3.1",
+  "description": "Discord Bot Commands Manager(dbcm) is project to support discord bot command control in a few lines.",
   "main": "./src/index.js",
   "scripts": {
     "test": "nodemon test/test.js"
@@ -29,7 +29,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "babel-eslint": "^10.0.3",
     "chalk": "^2.4.2",
     "discord.js": "^11.5.1",
     "fs": "^0.0.1-security",

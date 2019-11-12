@@ -22,13 +22,13 @@ class Utils {
         switch (options.lang) {
         case "ko-KR":
             this.lang = locales.kr
-            break;
+            break
         case "pt-BR":
             this.lang = locales.pt
-            break;
+            break
         case "en-US":
             this.lang = locales.en
-            break;
+            break
         default:
             this.lang = locales.en
             console.warn(chalk.red("DBCM Error: Unknown Language was configured. '" + options.lang + "' is probably not supported by DBCM. Set by default, which is 'English'."))
@@ -86,7 +86,7 @@ class Utils {
                 let parsed = JSON.parse(body)
                 return callbackData(parsed)
             })
-            break;
+            break
         case "status":
             await request("https://srhpyqt94yxb.statuspage.io/api/v2/status.json", (err, res, body) => {
                 if (err) throw new Error(err)
@@ -94,7 +94,7 @@ class Utils {
                 let parsed = JSON.parse(body).status
                 return callbackData(parsed)
             })
-            break;
+            break
         case "unresolved_incidents":
             await request("https://srhpyqt94yxb.statuspage.io/api/v2/incidents/unresolved.json", (err, res, body) => {
                 if (err) throw new Error(err)
@@ -102,7 +102,7 @@ class Utils {
                 let parsed = JSON.parse(body).incidents
                 return callbackData(parsed)
             })
-            break;
+            break
         case "all_incidents":
             await request("https://srhpyqt94yxb.statuspage.io/api/v2/incidents.json", (err, res, body) => {
                 if (err) throw new Error(err)
@@ -110,7 +110,7 @@ class Utils {
                 let parsed = JSON.parse(body).incidents
                 return callbackData(parsed)
             })
-            break;
+            break
         case "upcoming_maintenances":
             await request("https://srhpyqt94yxb.statuspage.io/api/v2/scheduled-maintenances/upcoming.json", (err, res, body) => {
                 if (err) throw new Error(err)
@@ -118,7 +118,7 @@ class Utils {
                 let parsed = JSON.parse(body).scheduled_maintenances
                 return callbackData(parsed)
             })
-            break;
+            break
         case "active_maintenances":
             await request("https://srhpyqt94yxb.statuspage.io/api/v2/scheduled-maintenances/active.json", (err, res, body) => {
                 if (err) throw new Error(err)
@@ -126,7 +126,7 @@ class Utils {
                 let parsed = JSON.parse(body).scheduled_maintenances
                 return callbackData(parsed)
             })
-            break;
+            break
         case "all_maintenances":
             await request("https://srhpyqt94yxb.statuspage.io/api/v2/scheduled-maintenances.json", (err, res, body) => {
                 if (err) throw new Error(err)
@@ -134,7 +134,7 @@ class Utils {
                 let parsed = JSON.parse(body).scheduled_maintenances
                 return callbackData(parsed)
             })
-            break;
+            break
         default:
             throw new ReferenceError(chalk.magenta(this.lang.unknownData.replace("{}", query)))
         }
