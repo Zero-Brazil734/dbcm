@@ -1,3 +1,7 @@
+<center>
+<h1>⚠️WARNING️ This package is now deprecated.</h1> 
+</center>
+
 <h1 align="center">Discord Bot Commands Manager🤖</h1>
 <p>
   <a href="https://www.npmjs.com/package/dbcm" target="_blank">
